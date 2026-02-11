@@ -130,16 +130,19 @@ class ProfileScreen extends StatelessWidget {
   static Widget _colorDot(Color c) => Container(width: 12, height: 12, margin: const EdgeInsets.symmetric(horizontal: 2), decoration: BoxDecoration(color: c, shape: BoxShape.circle));
 
   static Widget _menuItem(String emoji, String label, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-        child: Row(children: [
-          Text(emoji, style: const TextStyle(fontSize: 18)),
-          const SizedBox(width: 14),
-          Expanded(child: Text(label, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: AppTheme.textPrimary))),
-          const Text('›', style: TextStyle(fontSize: 20, color: AppTheme.textLight)),
-        ]),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+          child: Row(children: [
+            Text(emoji, style: const TextStyle(fontSize: 18)),
+            const SizedBox(width: 14),
+            Expanded(child: Text(label, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: AppTheme.textPrimary))),
+            const Text('›', style: TextStyle(fontSize: 20, color: AppTheme.textLight)),
+          ]),
+        ),
       ),
     );
   }

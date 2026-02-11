@@ -1,26 +1,83 @@
 import 'package:flutter/material.dart';
 import '../config/theme.dart';
 import '../widgets/clay_widgets.dart';
+import '../services/api_service.dart';
 
-class LearnScreen extends StatelessWidget {
+class LearnScreen extends StatefulWidget {
   const LearnScreen({super.key});
+  @override
+  State<LearnScreen> createState() => _LearnScreenState();
+}
+
+class _LearnScreenState extends State<LearnScreen> {
+  List<Map<String, dynamic>> _modules = [];
+  bool _loading = true;
+  Map<String, dynamic>? _selectedModule;
+  List<Map<String, dynamic>> _lessons = [];
+  bool _loadingLessons = false;
+
+  // Fallback for when API doesn't return data
+  final _fallbackModules = [
+    {'id': '1', 'title': 'Stock Market Basics', 'description': 'Learn what stocks are and how markets work', 'lessonCount': 8},
+    {'id': '2', 'title': 'Technical Analysis', 'description': 'Chart patterns, indicators, and trend analysis', 'lessonCount': 12},
+    {'id': '3', 'title': 'Fundamental Analysis', 'description': 'Financial statements, ratios, and valuation', 'lessonCount': 10},
+    {'id': '4', 'title': 'Risk Management', 'description': 'Position sizing, stop losses, and portfolio risk', 'lessonCount': 6},
+    {'id': '5', 'title': 'Trading Psychology', 'description': 'Emotions, discipline, and mental frameworks', 'lessonCount': 8},
+    {'id': '6', 'title': 'Options Trading', 'description': 'Calls, puts, strategies, and Greeks', 'lessonCount': 14},
+    {'id': '7', 'title': 'Mutual Funds & SIP', 'description': 'Passive investing and systematic plans', 'lessonCount': 6},
+    {'id': '8', 'title': 'Indian Markets', 'description': 'NSE, BSE, SEBI regulations, and taxation', 'lessonCount': 10},
+  ];
+
+  final _gradients = [AppTheme.accentGradient, AppTheme.blueGradient, AppTheme.greenGradient, AppTheme.redGradient, AppTheme.pinkGradient, AppTheme.cyanGradient, AppTheme.goldGradient, AppTheme.darkGradient];
+  final _icons = [Icons.school, Icons.candlestick_chart, Icons.analytics, Icons.shield, Icons.psychology, Icons.call_split, Icons.account_balance, Icons.flag];
+
+  @override
+  void initState() { super.initState(); _loadModules(); }
+
+  Future<void> _loadModules() async {
+    try {
+      final data = await ApiService.get('/education/modules');
+      final list = data is List ? data : (data['modules'] ?? []);
+      setState(() { _modules = List<Map<String, dynamic>>.from(list); _loading = false; });
+    } catch (_) {
+      setState(() { _modules = _fallbackModules; _loading = false; });
+    }
+  }
+
+  Future<void> _openModule(Map<String, dynamic> module) async {
+    final moduleId = module['id']?.toString() ?? module['_id']?.toString() ?? '';
+    if (moduleId.isEmpty) return;
+    setState(() { _selectedModule = module; _loadingLessons = true; _lessons = []; });
+    try {
+      final data = await ApiService.get('/education/modules/$moduleId');
+      final list = data['lessons'] ?? data['module']?['lessons'] ?? [];
+      setState(() { _lessons = List<Map<String, dynamic>>.from(list); _loadingLessons = false; });
+    } catch (_) {
+      setState(() { _loadingLessons = false; });
+    }
+  }
+
+  Future<void> _completeLesson(String moduleId, String lessonId) async {
+    try {
+      await ApiService.post('/education/modules/$moduleId/lessons/$lessonId/complete', {});
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Lesson completed! ✅'), backgroundColor: Colors.green),
+      );
+    } catch (_) {}
+  }
 
   @override
   Widget build(BuildContext context) {
-    final modules = [
-      {'title': 'Stock Market Basics', 'desc': 'Learn what stocks are and how markets work', 'icon': Icons.school, 'gradient': AppTheme.accentGradient, 'lessons': 8},
-      {'title': 'Technical Analysis', 'desc': 'Chart patterns, indicators, and trend analysis', 'icon': Icons.candlestick_chart, 'gradient': AppTheme.blueGradient, 'lessons': 12},
-      {'title': 'Fundamental Analysis', 'desc': 'Financial statements, ratios, and valuation', 'icon': Icons.analytics, 'gradient': AppTheme.greenGradient, 'lessons': 10},
-      {'title': 'Risk Management', 'desc': 'Position sizing, stop losses, and portfolio risk', 'icon': Icons.shield, 'gradient': AppTheme.redGradient, 'lessons': 6},
-      {'title': 'Trading Psychology', 'desc': 'Emotions, discipline, and mental frameworks', 'icon': Icons.psychology, 'gradient': AppTheme.pinkGradient, 'lessons': 8},
-      {'title': 'Options Trading', 'desc': 'Calls, puts, strategies, and Greeks', 'icon': Icons.call_split, 'gradient': AppTheme.cyanGradient, 'lessons': 14},
-      {'title': 'Mutual Funds & SIP', 'desc': 'Passive investing and systematic plans', 'icon': Icons.account_balance, 'gradient': AppTheme.goldGradient, 'lessons': 6},
-      {'title': 'Indian Markets', 'desc': 'NSE, BSE, SEBI regulations, and taxation', 'icon': Icons.flag, 'gradient': AppTheme.darkGradient, 'lessons': 10},
-    ];
+    // If viewing a module's lessons
+    if (_selectedModule != null) {
+      return _buildLessonView();
+    }
 
     return Scaffold(
       backgroundColor: AppTheme.bgColor,
-      body: SafeArea(child: CustomScrollView(slivers: [
+      body: SafeArea(child: _loading
+        ? const Center(child: CircularProgressIndicator())
+        : CustomScrollView(slivers: [
         SliverToBoxAdapter(child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
           child: Row(children: [
@@ -39,13 +96,12 @@ class LearnScreen extends StatelessWidget {
           ])),
         )),
 
-        // Quick stats
         SliverToBoxAdapter(child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
           child: Row(children: [
-            Expanded(child: ClayStatCard(label: 'Modules', value: '${modules.length}', icon: Icons.menu_book, iconGradient: AppTheme.accentGradient)),
+            Expanded(child: ClayStatCard(label: 'Modules', value: '${_modules.length}', icon: Icons.menu_book, iconGradient: AppTheme.accentGradient)),
             const SizedBox(width: 12),
-            Expanded(child: ClayStatCard(label: 'Total Lessons', value: '${modules.fold<int>(0, (sum, m) => sum + (m['lessons'] as int))}', icon: Icons.play_circle, iconGradient: AppTheme.greenGradient)),
+            Expanded(child: ClayStatCard(label: 'Total Lessons', value: '${_modules.fold<int>(0, (sum, m) => sum + ((m['lessonCount'] ?? m['lessons'] ?? 0) as int))}', icon: Icons.play_circle, iconGradient: AppTheme.greenGradient)),
           ]),
         )),
 
@@ -56,34 +112,157 @@ class LearnScreen extends StatelessWidget {
 
         SliverList(delegate: SliverChildBuilderDelegate(
           (_, i) {
-            final m = modules[i];
+            final m = _modules[i];
+            final grad = _gradients[i % _gradients.length];
+            final icon = _icons[i % _icons.length];
+            final lessonCount = m['lessonCount'] ?? m['lessons'] ?? 0;
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-              child: ClayCard(depth: 0.6, padding: const EdgeInsets.all(16), borderRadius: 18, onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Opening ${m['title']}...'), backgroundColor: AppTheme.accent));
-              }, child: Row(children: [
+              child: ClayCard(depth: 0.6, padding: const EdgeInsets.all(16), borderRadius: 18, onTap: () => _openModule(m), child: Row(children: [
                 Container(
                   width: 50, height: 50,
-                  decoration: BoxDecoration(gradient: m['gradient'] as Gradient, borderRadius: BorderRadius.circular(16)),
-                  child: Icon(m['icon'] as IconData, color: Colors.white, size: 24),
+                  decoration: BoxDecoration(gradient: grad, borderRadius: BorderRadius.circular(16)),
+                  child: Icon(icon, color: Colors.white, size: 24),
                 ),
                 const SizedBox(width: 14),
                 Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(m['title'] as String, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
+                  Text(m['title'] ?? 'Module', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
                   const SizedBox(height: 2),
-                  Text(m['desc'] as String, style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis),
+                  Text(m['description'] ?? '', style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis),
                   const SizedBox(height: 6),
-                  Text('${m['lessons']} lessons', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppTheme.accent)),
+                  Text('$lessonCount lessons', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppTheme.accent)),
                 ])),
                 const Icon(Icons.chevron_right, color: AppTheme.textLight),
               ])),
             );
           },
-          childCount: modules.length,
+          childCount: _modules.length,
         )),
 
         const SliverToBoxAdapter(child: SizedBox(height: 40)),
       ])),
+    );
+  }
+
+  Widget _buildLessonView() {
+    final module = _selectedModule!;
+    final moduleId = module['id']?.toString() ?? module['_id']?.toString() ?? '';
+    return Scaffold(
+      backgroundColor: AppTheme.bgColor,
+      body: SafeArea(child: CustomScrollView(slivers: [
+        SliverToBoxAdapter(child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+          child: Row(children: [
+            ClayIconButton(icon: Icons.arrow_back, onTap: () {
+              setState(() { _selectedModule = null; _lessons = []; });
+            }),
+            const SizedBox(width: 14),
+            Expanded(child: Text(module['title'] ?? 'Module', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
+          ]),
+        )),
+
+        if (module['description'] != null)
+          SliverToBoxAdapter(child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+            child: Text(module['description'], style: const TextStyle(fontSize: 13, color: AppTheme.textSecondary, height: 1.4)),
+          )),
+
+        SliverToBoxAdapter(child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
+          child: Text('Lessons (${_lessons.length})', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+        )),
+
+        if (_loadingLessons)
+          const SliverToBoxAdapter(child: Center(child: Padding(padding: EdgeInsets.all(40), child: CircularProgressIndicator())))
+        else if (_lessons.isEmpty)
+          SliverToBoxAdapter(child: Padding(
+            padding: const EdgeInsets.all(40),
+            child: Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
+              Icon(Icons.menu_book, size: 48, color: AppTheme.textLight),
+              const SizedBox(height: 12),
+              const Text('No lessons available yet', style: TextStyle(color: AppTheme.textSecondary)),
+            ])),
+          ))
+        else
+          SliverList(delegate: SliverChildBuilderDelegate(
+            (_, i) {
+              final lesson = _lessons[i];
+              final lessonId = lesson['id']?.toString() ?? lesson['_id']?.toString() ?? '';
+              final completed = lesson['completed'] == true;
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
+                child: ClayCard(depth: 0.6, padding: const EdgeInsets.all(16), borderRadius: 18, onTap: () {
+                  _showLessonContent(lesson, moduleId, lessonId);
+                }, child: Row(children: [
+                  Container(
+                    width: 40, height: 40,
+                    decoration: BoxDecoration(
+                      gradient: completed ? AppTheme.greenGradient : AppTheme.darkGradient,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Center(child: completed
+                      ? const Icon(Icons.check, color: Colors.white, size: 20)
+                      : Text('${i + 1}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700))),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Text(lesson['title'] ?? 'Lesson ${i + 1}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
+                    if (lesson['description'] != null) ...[
+                      const SizedBox(height: 2),
+                      Text(lesson['description'], style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary), maxLines: 2, overflow: TextOverflow.ellipsis),
+                    ],
+                  ])),
+                  const Icon(Icons.chevron_right, color: AppTheme.textLight),
+                ])),
+              );
+            },
+            childCount: _lessons.length,
+          )),
+
+        const SliverToBoxAdapter(child: SizedBox(height: 40)),
+      ])),
+    );
+  }
+
+  void _showLessonContent(Map<String, dynamic> lesson, String moduleId, String lessonId) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppTheme.bgColor,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      builder: (_) => DraggableScrollableSheet(
+        initialChildSize: 0.85,
+        minChildSize: 0.5,
+        maxChildSize: 0.95,
+        expand: false,
+        builder: (ctx, scrollCtrl) => SingleChildScrollView(
+          controller: scrollCtrl,
+          padding: const EdgeInsets.all(24),
+          child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: AppTheme.textLight, borderRadius: BorderRadius.circular(2)))),
+            const SizedBox(height: 20),
+            Text(lesson['title'] ?? 'Lesson', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: AppTheme.textPrimary)),
+            const SizedBox(height: 16),
+            Text(lesson['content'] ?? lesson['description'] ?? 'Content coming soon...', style: const TextStyle(fontSize: 14, color: AppTheme.textSecondary, height: 1.6)),
+            const SizedBox(height: 24),
+            SizedBox(width: double.infinity, child: ElevatedButton.icon(
+              onPressed: () {
+                _completeLesson(moduleId, lessonId);
+                Navigator.pop(ctx);
+              },
+              icon: const Icon(Icons.check_circle),
+              label: const Text('Mark as Complete'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppTheme.accent,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+              ),
+            )),
+            const SizedBox(height: 20),
+          ]),
+        ),
+      ),
     );
   }
 }

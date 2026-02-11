@@ -19,13 +19,19 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
 
   Future<void> _load() async {
     try {
-      final data = await ApiService.get('/challenge');
+      final data = await ApiService.get('/challenge/active');
       setState(() {
         _challenge = data['challenge'] ?? data;
-        _leaderboard = List<Map<String, dynamic>>.from(data['leaderboard'] ?? []);
         _isLoading = false;
       });
     } catch (e) { setState(() => _isLoading = false); }
+    // Load leaderboard separately
+    try {
+      final lb = await ApiService.get('/challenge/leaderboard');
+      setState(() {
+        _leaderboard = List<Map<String, dynamic>>.from(lb['leaderboard'] ?? lb is List ? lb : []);
+      });
+    } catch (_) {}
   }
 
   @override
@@ -79,7 +85,9 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
         if (!(_challenge?['active'] ?? false)) SliverToBoxAdapter(child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
           child: ClayButton(gradient: AppTheme.accentGradient, onPressed: () async {
-            try { await ApiService.post('/challenge/start', {}); _load(); } catch (_) {}
+            try { await ApiService.post('/challenge', {}); _load(); } catch (e) {
+              if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: $e'), backgroundColor: AppTheme.red));
+            }
           }, child: const Text('Start Challenge', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700))),
         )),
 

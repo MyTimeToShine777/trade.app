@@ -18,7 +18,7 @@ class _RiskScreenState extends State<RiskScreen> {
 
   Future<void> _load() async {
     try {
-      final data = await ApiService.get('/risk');
+      final data = await ApiService.get('/risk/dashboard');
       setState(() { _riskData = data; _isLoading = false; });
     } catch (e) { setState(() => _isLoading = false); }
   }

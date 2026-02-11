@@ -67,18 +67,35 @@ class _JournalScreenState extends State<JournalScreen> {
             final e = _entries[i];
             final emotion = (e['emotion'] ?? 'neutral').toString();
             final emotionIcon = emotion == 'happy' ? '😊' : emotion == 'sad' ? '😔' : emotion == 'fearful' ? '😨' : emotion == 'greedy' ? '🤑' : '😐';
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
-              child: ClayCard(depth: 0.5, padding: const EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Row(children: [
-                  Text(emotionIcon, style: const TextStyle(fontSize: 20)),
-                  const SizedBox(width: 8),
-                  Expanded(child: Text(e['title'] ?? e['symbol'] ?? 'Entry', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700))),
-                  Text(e['date'] ?? '', style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
-                ]),
-                if (e['notes'] != null) ...[const SizedBox(height: 8), Text(e['notes']!, style: const TextStyle(fontSize: 13, color: AppTheme.textSecondary, height: 1.4), maxLines: 3, overflow: TextOverflow.ellipsis)],
-                if (e['strategy'] != null) ...[const SizedBox(height: 6), ClayChip(label: e['strategy']!, icon: Icons.psychology)],
-              ])),
+            final entryId = (e['id'] ?? e['_id'] ?? '').toString();
+            return Dismissible(
+              key: Key(entryId.isNotEmpty ? entryId : 'entry_$i'),
+              direction: DismissDirection.endToStart,
+              background: Container(
+                alignment: Alignment.centerRight,
+                padding: const EdgeInsets.only(right: 24),
+                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+                decoration: BoxDecoration(color: Colors.red.shade400, borderRadius: BorderRadius.circular(18)),
+                child: const Icon(Icons.delete, color: Colors.white),
+              ),
+              confirmDismiss: (_) async {
+                if (entryId.isEmpty) return false;
+                await _deleteEntry(entryId);
+                return false; // we reload the list manually
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
+                child: ClayCard(depth: 0.5, padding: const EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Row(children: [
+                    Text(emotionIcon, style: const TextStyle(fontSize: 20)),
+                    const SizedBox(width: 8),
+                    Expanded(child: Text(e['title'] ?? e['symbol'] ?? 'Entry', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700))),
+                    Text(e['date'] ?? '', style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+                  ]),
+                  if (e['notes'] != null) ...[const SizedBox(height: 8), Text(e['notes']!, style: const TextStyle(fontSize: 13, color: AppTheme.textSecondary, height: 1.4), maxLines: 3, overflow: TextOverflow.ellipsis)],
+                  if (e['strategy'] != null) ...[const SizedBox(height: 6), ClayChip(label: e['strategy']!, icon: Icons.psychology)],
+                ])),
+              ),
             );
           },
           childCount: _entries.length,
@@ -93,6 +110,7 @@ class _JournalScreenState extends State<JournalScreen> {
     final titleCtrl = TextEditingController();
     final notesCtrl = TextEditingController();
     String emotion = 'neutral';
+    final _emojiMap = {'happy': '😊', 'neutral': '😐', 'sad': '😔', 'fearful': '😨', 'greedy': '🤑'};
 
     showModalBottomSheet(
       context: context, isScrollControlled: true, backgroundColor: AppTheme.cardColor,
@@ -109,13 +127,13 @@ class _JournalScreenState extends State<JournalScreen> {
           ClayInput(controller: notesCtrl, labelText: 'NOTES', hintText: 'Describe your thought process...', prefixIcon: Icons.notes, maxLines: 3),
           const SizedBox(height: 14),
           Row(children: [
-            for (final e in ['😊', '😐', '😔', '😨', '🤑']) ...[
+            for (final entry in _emojiMap.entries) ...[
               GestureDetector(
-                onTap: () => ss(() => emotion = e),
+                onTap: () => ss(() => emotion = entry.key),
                 child: Container(
                   padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(color: emotion == e ? AppTheme.accent.withValues(alpha: 0.15) : null, borderRadius: BorderRadius.circular(12)),
-                  child: Text(e, style: const TextStyle(fontSize: 24)),
+                  decoration: BoxDecoration(color: emotion == entry.key ? AppTheme.accent.withValues(alpha: 0.15) : null, borderRadius: BorderRadius.circular(12)),
+                  child: Text(entry.value, style: const TextStyle(fontSize: 24)),
                 ),
               ),
               const SizedBox(width: 8),
@@ -123,14 +141,42 @@ class _JournalScreenState extends State<JournalScreen> {
           ]),
           const SizedBox(height: 20),
           ClayButton(gradient: AppTheme.accentGradient, onPressed: () async {
+            if (titleCtrl.text.trim().isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please enter a title'), backgroundColor: Colors.red));
+              return;
+            }
             try {
               await ApiService.post('/journal', {'title': titleCtrl.text, 'notes': notesCtrl.text, 'emotion': emotion, 'date': DateFormat('yyyy-MM-dd').format(DateTime.now())});
               if (ctx.mounted) Navigator.pop(ctx);
               _loadEntries();
-            } catch (_) {}
+            } catch (e) {
+              if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to save: $e'), backgroundColor: Colors.red));
+            }
           }, child: const Text('Save Entry', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700))),
         ]),
       )),
     );
+  }
+
+  Future<void> _deleteEntry(String id) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: AppTheme.cardColor,
+        title: const Text('Delete Entry?', style: TextStyle(color: AppTheme.textPrimary)),
+        content: const Text('This action cannot be undone.', style: TextStyle(color: AppTheme.textSecondary)),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
+          TextButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Delete', style: TextStyle(color: Colors.red))),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+    try {
+      await ApiService.delete('/journal/$id');
+      _loadEntries();
+    } catch (e) {
+      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to delete: $e'), backgroundColor: Colors.red));
+    }
   }
 }
