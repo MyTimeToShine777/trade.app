@@ -6,6 +6,7 @@ import '../widgets/clay_widgets.dart';
 import '../providers/auth_provider.dart';
 import '../providers/portfolio_provider.dart';
 import '../providers/market_provider.dart';
+import '../providers/ai_provider.dart';
 
 class DashboardScreen extends StatefulWidget {
   final ValueChanged<int>? onSwitchTab;
@@ -104,6 +105,30 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Expanded(child: _emojiStat('📈', 'Invested', _fmtShort(portfolio.totalInvested), AppTheme.greenGradient, subtitle: '${portfolio.totalPnlPercent.toStringAsFixed(1)}%')),
             ]),
           )),
+
+          // Today's P&L
+          SliverToBoxAdapter(child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+            child: ClayCard(depth: 0.4, padding: const EdgeInsets.all(14), child: Row(children: [
+              Container(
+                width: 40, height: 40,
+                decoration: BoxDecoration(
+                  gradient: portfolio.totalPnl >= 0 ? AppTheme.greenGradient : AppTheme.redGradient,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Center(child: Text(portfolio.totalPnl >= 0 ? '📈' : '📉', style: const TextStyle(fontSize: 18))),
+              ),
+              const SizedBox(width: 12),
+              Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                const Text("Today's P&L", style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+                Text('${portfolio.totalPnl >= 0 ? '+' : ''}${_fmt.format(portfolio.totalPnl)} (${portfolio.totalPnlPercent.toStringAsFixed(2)}%)',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: portfolio.totalPnl >= 0 ? AppTheme.green : AppTheme.red)),
+              ])),
+            ])),
+          )),
+
+          // AI Market Insight
+          SliverToBoxAdapter(child: _buildAiInsight()),
 
           // Quick actions
           SliverToBoxAdapter(child: Padding(
@@ -290,6 +315,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget _watchlistTile(Map<String, dynamic> w) {
     final price = (w['current_price'] ?? w['price'] ?? 0).toDouble();
+    final change = (w['changePercent'] ?? w['change_percent'] ?? w['change'] ?? 0).toDouble();
+    final isPos = change >= 0;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
       child: ClayCard(
@@ -300,9 +327,92 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Text(w['symbol'] ?? '', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
             Text(w['name'] ?? '', style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis),
           ])),
-          Text(price > 0 ? _fmt.format(price) : '--', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
+          Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+            Text(price > 0 ? _fmt.format(price) : '--', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
+            if (change != 0)
+              Text('${isPos ? '+' : ''}${change.toStringAsFixed(2)}%', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: isPos ? AppTheme.green : AppTheme.red)),
+          ]),
         ]),
       ),
     );
+  }
+
+  Widget _buildAiInsight() {
+    final ai = context.watch<AiProvider>();
+    final sentiment = ai.sentiment;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+      child: ClayCard(
+        depth: 0.5,
+        padding: const EdgeInsets.all(16),
+        borderRadius: 18,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Row(children: [
+            Container(
+              width: 36, height: 36,
+              decoration: BoxDecoration(gradient: AppTheme.pinkGradient, borderRadius: BorderRadius.circular(10)),
+              child: const Center(child: Text('🧠', style: TextStyle(fontSize: 16))),
+            ),
+            const SizedBox(width: 10),
+            const Expanded(child: Text('AI Market Insight', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary))),
+            if (ai.isSentimentLoading)
+              const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.accent))
+            else
+              GestureDetector(
+                onTap: () => ai.getSentiment(),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(color: AppTheme.accent.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(8)),
+                  child: Text(sentiment != null ? '↻ Refresh' : 'Get Insight', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.accent)),
+                ),
+              ),
+          ]),
+          if (sentiment != null) ...[
+            const SizedBox(height: 14),
+            // Sentiment row
+            Row(children: [
+              Text(_sentimentEmoji(sentiment['sentiment'] ?? ''), style: const TextStyle(fontSize: 22)),
+              const SizedBox(width: 8),
+              ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.35),
+                child: Text((sentiment['sentiment'] ?? 'Unknown').toString().toUpperCase(), style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+              ),
+              const Spacer(),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                decoration: BoxDecoration(color: AppTheme.accent.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(10)),
+                child: Text('Score: ${sentiment['score'] ?? '-'}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.accent)),
+              ),
+            ]),
+            const SizedBox(height: 10),
+            Text(sentiment['summary'] ?? '', style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary, height: 1.5), maxLines: 3, overflow: TextOverflow.ellipsis),
+            if (sentiment['advice'] != null) ...[
+              const SizedBox(height: 8),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(color: AppTheme.accent.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(10)),
+                child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  const Text('💡 ', style: TextStyle(fontSize: 12)),
+                  Expanded(child: Text(sentiment['advice'], style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppTheme.textPrimary, height: 1.4), maxLines: 2, overflow: TextOverflow.ellipsis)),
+                ]),
+              ),
+            ],
+          ] else if (ai.error != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Text(ai.error!, style: const TextStyle(fontSize: 11, color: AppTheme.red)),
+            ),
+        ]),
+      ),
+    );
+  }
+
+  String _sentimentEmoji(String s) {
+    final lower = s.toLowerCase();
+    if (lower.contains('bull') || lower.contains('positive')) return '🟢';
+    if (lower.contains('bear') || lower.contains('negative')) return '🔴';
+    if (lower.contains('neutral') || lower.contains('mixed')) return '🟡';
+    return '⚪';
   }
 }

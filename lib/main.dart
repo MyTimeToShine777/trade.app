@@ -37,8 +37,6 @@ void main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.light,
-    systemNavigationBarColor: AppTheme.bgColor,
-    systemNavigationBarIconBrightness: Brightness.light,
   ));
   await NotificationService.init();
   runApp(const PugazhStocksApp());
@@ -60,38 +58,54 @@ class PugazhStocksApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AiProvider()),
         ChangeNotifierProvider(create: (_) => SipProvider()),
       ],
-      child: MaterialApp(
-        title: 'Pugazh Stocks',
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          brightness: Brightness.dark,
-          colorScheme: AppTheme.colorScheme,
-          scaffoldBackgroundColor: AppTheme.bgColor,
-          textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
-          useMaterial3: true,
-          splashColor: AppTheme.accent.withValues(alpha: 0.08),
-          highlightColor: AppTheme.accent.withValues(alpha: 0.05),
-          canvasColor: AppTheme.cardColor,
-          dialogBackgroundColor: AppTheme.cardColor,
-        ),
-        initialRoute: '/',
-        routes: {
-          '/': (_) => const SplashScreen(),
-          '/login': (_) => const LoginScreen(),
-          '/home': (_) => const HomeScreen(),
-          '/stock-detail': (_) => const StockDetailScreen(),
-          '/wallet': (_) => const WalletScreen(),
-          '/watchlist': (_) => const WatchlistScreen(),
-          '/orders': (_) => const OrdersScreen(),
-          '/auto-invest': (_) => const AutoInvestScreen(),
-          '/commodities': (_) => const CommoditiesScreen(),
-          '/mutual-funds': (_) => const MutualFundsScreen(),
-          '/sip': (_) => const SipScreen(),
-          '/screener': (_) => const ScreenerScreen(),
-          '/journal': (_) => const JournalScreen(),
-          '/challenge': (_) => const ChallengeScreen(),
-          '/risk': (_) => const RiskScreen(),
-          '/learn': (_) => const LearnScreen(),
+      child: Consumer<ThemeProvider>(
+        builder: (context, tp, _) {
+          final isDark = tp.isDark;
+          final baseText = isDark ? ThemeData.dark().textTheme : ThemeData.light().textTheme;
+          return MaterialApp(
+            title: 'Pugazh Stocks',
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              brightness: isDark ? Brightness.dark : Brightness.light,
+              colorScheme: ColorScheme(
+                brightness: isDark ? Brightness.dark : Brightness.light,
+                primary: tp.accent,
+                secondary: tp.secondary,
+                surface: tp.card,
+                error: AppTheme.red,
+                onPrimary: Colors.white,
+                onSecondary: Colors.white,
+                onSurface: tp.textPri,
+                onError: Colors.white,
+              ),
+              scaffoldBackgroundColor: tp.bg,
+              textTheme: GoogleFonts.interTextTheme(baseText),
+              useMaterial3: true,
+              splashColor: tp.accent.withValues(alpha: 0.08),
+              highlightColor: tp.accent.withValues(alpha: 0.05),
+              canvasColor: tp.card,
+              dialogBackgroundColor: tp.card,
+            ),
+            initialRoute: '/',
+            routes: {
+              '/': (_) => const SplashScreen(),
+              '/login': (_) => const LoginScreen(),
+              '/home': (_) => const HomeScreen(),
+              '/stock-detail': (_) => const StockDetailScreen(),
+              '/wallet': (_) => const WalletScreen(),
+              '/watchlist': (_) => const WatchlistScreen(),
+              '/orders': (_) => const OrdersScreen(),
+              '/auto-invest': (_) => const AutoInvestScreen(),
+              '/commodities': (_) => const CommoditiesScreen(),
+              '/mutual-funds': (_) => const MutualFundsScreen(),
+              '/sip': (_) => const SipScreen(),
+              '/screener': (_) => const ScreenerScreen(),
+              '/journal': (_) => const JournalScreen(),
+              '/challenge': (_) => const ChallengeScreen(),
+              '/risk': (_) => const RiskScreen(),
+              '/learn': (_) => const LearnScreen(),
+            },
+          );
         },
       ),
     );

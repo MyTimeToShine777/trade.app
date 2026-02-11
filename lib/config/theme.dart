@@ -1,7 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../providers/theme_provider.dart';
 
 class AppTheme {
-  // ═══════════════════════ MODERN DARK PALETTE ═══════════════════════
+  // ═══════════════════ DYNAMIC THEME ACCESS ═══════════════════
+  /// Call `AppTheme.of(context)` to get theme-aware colors.
+  /// Falls back to static defaults when no provider is available.
+  static _DynTheme of(BuildContext context) {
+    final tp = context.watch<ThemeProvider>();
+    return _DynTheme(tp);
+  }
+
+  static _DynTheme read(BuildContext context) {
+    final tp = context.read<ThemeProvider>();
+    return _DynTheme(tp);
+  }
+
+  // ═══════════════════════ DEFAULT PALETTE (Midnight Purple) ═══════════════════════
   static const Color bgColor = Color(0xFF0A0E17);
   static const Color cardColor = Color(0xFF141B2D);
   static const Color surfaceColor = Color(0xFF1C2438);
@@ -77,4 +92,36 @@ class AppTheme {
   static const double radiusXL = 32;
 
   static const colorScheme = ColorScheme.dark(primary: accent, secondary: secondary, surface: cardColor, error: red);
+}
+
+/// Dynamic theme wrapper — reads colors from ThemeProvider
+class _DynTheme {
+  final ThemeProvider tp;
+  const _DynTheme(this.tp);
+
+  Color get bg => tp.bg;
+  Color get card => tp.card;
+  Color get surface => tp.surface;
+  Color get deep => tp.deep;
+  Color get accent => tp.accent;
+  Color get accentLt => tp.accentLt;
+  Color get secondary => tp.secondary;
+  Color get textPrimary => tp.textPri;
+  Color get textSecondary => tp.textSec;
+  Color get border => tp.border;
+
+  LinearGradient get accentGradient => LinearGradient(
+    begin: Alignment.topLeft, end: Alignment.bottomRight,
+    colors: [tp.accent, tp.accentLt],
+  );
+
+  List<BoxShadow> glowShadow(Color color, {double intensity = 0.3}) => [
+    BoxShadow(color: color.withValues(alpha: intensity), blurRadius: 16, offset: const Offset(0, 4)),
+    BoxShadow(color: color.withValues(alpha: intensity * 0.5), blurRadius: 40, offset: const Offset(0, 8)),
+  ];
+
+  List<BoxShadow> clayShadow({double depth = 1.0}) => [
+    BoxShadow(color: Colors.black.withValues(alpha: 0.3 * depth), offset: Offset(0, 2 * depth), blurRadius: 8 * depth),
+    BoxShadow(color: tp.accent.withValues(alpha: 0.05 * depth), offset: const Offset(0, 0), blurRadius: 20 * depth),
+  ];
 }

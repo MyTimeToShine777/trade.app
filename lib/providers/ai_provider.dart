@@ -6,20 +6,24 @@ class AiProvider extends ChangeNotifier {
   Map<String, dynamic>? _analysis;
   Map<String, dynamic>? _comparison;
   Map<String, dynamic>? _sentiment;
+  Map<String, dynamic>? _portfolioAnalysis;
   bool _isChatLoading = false;
   bool _isAnalyzing = false;
   bool _isComparing = false;
   bool _isSentimentLoading = false;
+  bool _isPortfolioAnalyzing = false;
   String? _error;
 
   List<Map<String, dynamic>> get chatMessages => _chatMessages;
   Map<String, dynamic>? get analysis => _analysis;
   Map<String, dynamic>? get comparison => _comparison;
   Map<String, dynamic>? get sentiment => _sentiment;
+  Map<String, dynamic>? get portfolioAnalysis => _portfolioAnalysis;
   bool get isChatLoading => _isChatLoading;
   bool get isAnalyzing => _isAnalyzing;
   bool get isComparing => _isComparing;
   bool get isSentimentLoading => _isSentimentLoading;
+  bool get isPortfolioAnalyzing => _isPortfolioAnalyzing;
   String? get error => _error;
 
   Future<void> sendChat(String message) async {
@@ -29,9 +33,18 @@ class AiProvider extends ChangeNotifier {
       'timestamp': DateTime.now().toIso8601String()
     });
     _isChatLoading = true;
+    _error = null;
     notifyListeners();
     try {
-      final data = await ApiService.post('/ai/chat', {'message': message});
+      // Send conversation history for context
+      final history = _chatMessages
+          .where((m) => m['role'] == 'user' || m['role'] == 'assistant')
+          .map((m) => {'role': m['role'], 'content': m['content']})
+          .toList();
+      final data = await ApiService.post('/ai/chat', {
+        'message': message,
+        'history': history.length > 1 ? history.sublist(0, history.length - 1) : [],
+      });
       _chatMessages.add({
         'role': 'assistant',
         'content': data['response'] ?? data['message'] ?? '',
@@ -40,9 +53,10 @@ class AiProvider extends ChangeNotifier {
       _isChatLoading = false;
       notifyListeners();
     } catch (e) {
+      _error = e.toString();
       _chatMessages.add({
         'role': 'assistant',
-        'content': 'Sorry, I encountered an error. Please try again.',
+        'content': 'Sorry, I encountered an error: ${e.toString()}. Please try again.',
         'timestamp': DateTime.now().toIso8601String()
       });
       _isChatLoading = false;
@@ -53,6 +67,7 @@ class AiProvider extends ChangeNotifier {
   Future<void> analyzeStock(String symbol) async {
     _isAnalyzing = true;
     _analysis = null;
+    _error = null;
     notifyListeners();
     try {
       final data = await ApiService.get('/ai/analyze/$symbol');
@@ -69,6 +84,7 @@ class AiProvider extends ChangeNotifier {
   Future<void> compareStocks(List<String> symbols) async {
     _isComparing = true;
     _comparison = null;
+    _error = null;
     notifyListeners();
     try {
       final s1 = symbols.isNotEmpty ? symbols[0] : '';
@@ -85,9 +101,10 @@ class AiProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> getSentiment(String symbol) async {
+  Future<void> getSentiment() async {
     _isSentimentLoading = true;
     _sentiment = null;
+    _error = null;
     notifyListeners();
     try {
       final data = await ApiService.get('/ai/sentiment');
@@ -101,6 +118,23 @@ class AiProvider extends ChangeNotifier {
     }
   }
 
+  Future<void> getPortfolioAnalysis() async {
+    _isPortfolioAnalyzing = true;
+    _portfolioAnalysis = null;
+    _error = null;
+    notifyListeners();
+    try {
+      final data = await ApiService.get('/ai/portfolio-analysis');
+      _portfolioAnalysis = data;
+      _isPortfolioAnalyzing = false;
+      notifyListeners();
+    } catch (e) {
+      _error = e.toString();
+      _isPortfolioAnalyzing = false;
+      notifyListeners();
+    }
+  }
+
   void clearChat() {
     _chatMessages = [];
     notifyListeners();
@@ -110,6 +144,7 @@ class AiProvider extends ChangeNotifier {
     _analysis = null;
     _comparison = null;
     _sentiment = null;
+    _portfolioAnalysis = null;
     notifyListeners();
   }
 }

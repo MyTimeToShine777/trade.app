@@ -51,6 +51,7 @@ class AutoInvestProvider extends ChangeNotifier {
   }
 
   Future<bool> createPlan({
+    String name = '',
     required double monthlyBudget,
     required String riskLevel,
     required List<String> assetTypes,
@@ -60,12 +61,14 @@ class AutoInvestProvider extends ChangeNotifier {
     _error = null;
     notifyListeners();
     try {
-      final data = await ApiService.post('/auto-invest/plan', {
+      final body = <String, dynamic>{
         'monthlyBudget': monthlyBudget,
         'riskLevel': riskLevel,
         'assetTypes': assetTypes,
         'strategy': strategy,
-      });
+      };
+      if (name.isNotEmpty) body['name'] = name;
+      final data = await ApiService.post('/auto-invest/plan', body);
       _plan = data['plan'];
       _isLoading = false;
       notifyListeners();
@@ -73,6 +76,47 @@ class AutoInvestProvider extends ChangeNotifier {
     } catch (e) {
       _error = e.toString();
       _isLoading = false;
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> pausePlan() async {
+    try {
+      await ApiService.post('/auto-invest/plan/pause', {});
+      if (_plan != null) _plan!['status'] = 'paused';
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> resumePlan() async {
+    try {
+      await ApiService.post('/auto-invest/plan/resume', {});
+      if (_plan != null) _plan!['status'] = 'active';
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+      return false;
+    }
+  }
+
+  Future<bool> cancelPlan() async {
+    try {
+      await ApiService.delete('/auto-invest/plan');
+      _plan = null;
+      _picks = [];
+      _monthlyBudget = null;
+      notifyListeners();
+      return true;
+    } catch (e) {
+      _error = e.toString();
       notifyListeners();
       return false;
     }

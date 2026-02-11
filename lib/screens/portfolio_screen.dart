@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import '../config/theme.dart';
 import '../widgets/clay_widgets.dart';
 import '../providers/portfolio_provider.dart';
+import '../providers/auth_provider.dart';
+import '../providers/ai_provider.dart';
 
 class PortfolioScreen extends StatefulWidget {
   const PortfolioScreen({super.key});
@@ -24,6 +26,8 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
   @override
   Widget build(BuildContext context) {
     final p = context.watch<PortfolioProvider>();
+    final auth = context.watch<AuthProvider>();
+    final ai = context.watch<AiProvider>();
     return SafeArea(
       child: RefreshIndicator(
         onRefresh: () async => context.read<PortfolioProvider>().loadPortfolio(),
@@ -61,6 +65,81 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
             ])),
           )),
 
+          // Cash balance card
+          SliverToBoxAdapter(child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+            child: Row(children: [
+              Expanded(child: ClayCard(depth: 0.4, padding: const EdgeInsets.all(14), child: Row(children: [
+                Container(
+                  width: 36, height: 36,
+                  decoration: BoxDecoration(gradient: AppTheme.greenGradient, borderRadius: BorderRadius.circular(10)),
+                  child: const Center(child: Text('💰', style: TextStyle(fontSize: 16))),
+                ),
+                const SizedBox(width: 10),
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  const Text('Cash Balance', style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+                  Text(_fmt.format(auth.balance), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+                ]),
+              ]))),
+              const SizedBox(width: 10),
+              Expanded(child: ClayCard(depth: 0.4, padding: const EdgeInsets.all(14), child: Row(children: [
+                Container(
+                  width: 36, height: 36,
+                  decoration: BoxDecoration(gradient: AppTheme.accentGradient, borderRadius: BorderRadius.circular(10)),
+                  child: const Center(child: Text('💎', style: TextStyle(fontSize: 16))),
+                ),
+                const SizedBox(width: 10),
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  const Text('Total Value', style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+                  Text(_fmt.format(auth.balance + p.totalCurrent), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+                ]),
+              ]))),
+            ]),
+          )),
+
+          // AI Portfolio Insight
+          SliverToBoxAdapter(child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
+            child: ClayCard(depth: 0.4, padding: const EdgeInsets.all(14), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(children: [
+                const Text('🤖 AI Portfolio Insight', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: AppTheme.accentLight)),
+                const Spacer(),
+                GestureDetector(
+                  onTap: ai.isPortfolioAnalyzing ? null : () => context.read<AiProvider>().getPortfolioAnalysis(),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(color: AppTheme.accent.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(8)),
+                    child: ai.isPortfolioAnalyzing
+                      ? const SizedBox(width: 14, height: 14, child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.accent))
+                      : const Text('Analyze', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.accent)),
+                  ),
+                ),
+              ]),
+              if (ai.portfolioAnalysis != null) ...[
+                const SizedBox(height: 8),
+                Text(
+                  ai.portfolioAnalysis!['analysis'] ?? ai.portfolioAnalysis!['suggestions']?.toString() ?? 'Tap Analyze for AI insights',
+                  style: const TextStyle(fontSize: 12, color: AppTheme.textPrimary, height: 1.4),
+                  maxLines: 4, overflow: TextOverflow.ellipsis,
+                ),
+                if (ai.portfolioAnalysis!['suggestions'] is List) ...[
+                  const SizedBox(height: 6),
+                  ...(ai.portfolioAnalysis!['suggestions'] as List).take(2).map((s) => Padding(
+                    padding: const EdgeInsets.only(bottom: 3),
+                    child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                      const Text('💡 ', style: TextStyle(fontSize: 10)),
+                      Expanded(child: Text(s.toString(), style: const TextStyle(fontSize: 11, color: AppTheme.accentLight, height: 1.3), maxLines: 2, overflow: TextOverflow.ellipsis)),
+                    ]),
+                  )),
+                ],
+              ] else
+                const Padding(
+                  padding: EdgeInsets.only(top: 6),
+                  child: Text('Tap Analyze for AI-powered portfolio insights', style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+                ),
+            ])),
+          )),
+
           // Holdings header
           SliverToBoxAdapter(child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 24, 20, 12),
@@ -91,7 +170,9 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                 final qty = (h['quantity'] ?? 0);
                 final avg = (h['avg_price'] ?? h['avgPrice'] ?? 0).toDouble();
                 final cur = (h['current_price'] ?? h['currentPrice'] ?? avg).toDouble();
-                final pnl = (cur - avg) * qty;
+                final totalInvested = avg * qty;
+                final totalCurrent = cur * qty;
+                final pnl = totalCurrent - totalInvested;
                 final pct = avg > 0 ? ((cur - avg) / avg * 100) : 0.0;
                 final isPos = pnl >= 0;
 
@@ -113,8 +194,8 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                           Text('$qty shares · Avg ${_fmt.format(avg)}', style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
                         ])),
                         Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                          Text(_fmt.format(cur), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
-                          Text('${isPos ? '+' : ''}${_fmt.format(pnl)}', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: isPos ? AppTheme.green : AppTheme.red)),
+                          Text(_fmt.format(totalCurrent), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
+                          Text('${isPos ? '+' : ''}${_fmt.format(pnl)} (${pct.toStringAsFixed(1)}%)', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: isPos ? AppTheme.green : AppTheme.red)),
                         ]),
                       ]),
                       const SizedBox(height: 10),

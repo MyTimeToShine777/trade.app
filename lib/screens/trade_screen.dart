@@ -6,6 +6,7 @@ import '../config/theme.dart';
 import '../widgets/clay_widgets.dart';
 import '../providers/market_provider.dart';
 import '../providers/portfolio_provider.dart';
+import '../providers/ai_provider.dart';
 
 class TradeScreen extends StatefulWidget {
   const TradeScreen({super.key});
@@ -160,6 +161,21 @@ class _TradeScreenState extends State<TradeScreen> {
               Text(fmt.format(price), style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: AppTheme.textPrimary)),
             ]),
             const SizedBox(height: 20),
+            // AI tip
+            GestureDetector(
+              onTap: () { Navigator.pop(ctx); Navigator.pushNamed(context, '/stock-detail', arguments: stock['symbol']); },
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                decoration: BoxDecoration(color: AppTheme.accent.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(12), border: Border.all(color: AppTheme.accent.withValues(alpha: 0.2))),
+                child: const Row(children: [
+                  Text('🤖', style: TextStyle(fontSize: 16)),
+                  SizedBox(width: 8),
+                  Expanded(child: Text('View AI Analysis before trading →', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppTheme.accent))),
+                ]),
+              ),
+            ),
+            const SizedBox(height: 16),
             // BUY/SELL toggle
             Row(children: [
               Expanded(child: ClayChip(label: 'BUY', icon: Icons.arrow_upward, isActive: orderType == 'BUY', onTap: () => setSheetState(() => orderType = 'BUY'))),

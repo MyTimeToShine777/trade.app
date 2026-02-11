@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -28,6 +29,15 @@ class NotificationService {
         debugPrint('[Notification] Tapped: ${response.payload}');
       },
     );
+
+    // Request notification permission on Android 13+
+    if (Platform.isAndroid) {
+      final android = _notifications.resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>();
+      if (android != null) {
+        await android.requestNotificationsPermission();
+      }
+    }
 
     _initialized = true;
     debugPrint('[NotificationService] Initialized');
