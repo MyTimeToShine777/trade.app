@@ -83,7 +83,7 @@ class _LearnScreenState extends State<LearnScreen> {
           child: Row(children: [
             ClayIconButton(icon: Icons.arrow_back, onTap: () => Navigator.pop(context)),
             const SizedBox(width: 14),
-            const Expanded(child: Text('Learn', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
+            Expanded(child: Text('Learn', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
           ]),
         )),
 
@@ -107,7 +107,7 @@ class _LearnScreenState extends State<LearnScreen> {
 
         SliverToBoxAdapter(child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 24, 20, 12),
-          child: const Text('Modules', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+          child: Text('Modules', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
         )),
 
         SliverList(delegate: SliverChildBuilderDelegate(
@@ -126,13 +126,13 @@ class _LearnScreenState extends State<LearnScreen> {
                 ),
                 const SizedBox(width: 14),
                 Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(m['title'] ?? 'Module', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
+                  Text(m['title'] ?? 'Module', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
                   const SizedBox(height: 2),
-                  Text(m['description'] ?? '', style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis),
+                  Text(m['description'] ?? '', style: TextStyle(fontSize: 12, color: AppTheme.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis),
                   const SizedBox(height: 6),
-                  Text('$lessonCount lessons', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppTheme.accent)),
+                  Text('$lessonCount lessons', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppTheme.accent)),
                 ])),
-                const Icon(Icons.chevron_right, color: AppTheme.textLight),
+                Icon(Icons.chevron_right, color: AppTheme.textLight),
               ])),
             );
           },
@@ -157,19 +157,19 @@ class _LearnScreenState extends State<LearnScreen> {
               setState(() { _selectedModule = null; _lessons = []; });
             }),
             const SizedBox(width: 14),
-            Expanded(child: Text(module['title'] ?? 'Module', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
+            Expanded(child: Text(module['title'] ?? 'Module', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
           ]),
         )),
 
         if (module['description'] != null)
           SliverToBoxAdapter(child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
-            child: Text(module['description'], style: const TextStyle(fontSize: 13, color: AppTheme.textSecondary, height: 1.4)),
+            child: Text(module['description'], style: TextStyle(fontSize: 13, color: AppTheme.textSecondary, height: 1.4)),
           )),
 
         SliverToBoxAdapter(child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
-          child: Text('Lessons (${_lessons.length})', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+          child: Text('Lessons (${_lessons.length})', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
         )),
 
         if (_loadingLessons)
@@ -180,7 +180,7 @@ class _LearnScreenState extends State<LearnScreen> {
             child: Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
               Icon(Icons.menu_book, size: 48, color: AppTheme.textLight),
               const SizedBox(height: 12),
-              const Text('No lessons available yet', style: TextStyle(color: AppTheme.textSecondary)),
+              Text('No lessons available yet', style: TextStyle(color: AppTheme.textSecondary)),
             ])),
           ))
         else
@@ -206,13 +206,13 @@ class _LearnScreenState extends State<LearnScreen> {
                   ),
                   const SizedBox(width: 14),
                   Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text(lesson['title'] ?? 'Lesson ${i + 1}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
+                    Text(lesson['title'] ?? 'Lesson ${i + 1}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
                     if (lesson['description'] != null) ...[
                       const SizedBox(height: 2),
-                      Text(lesson['description'], style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary), maxLines: 2, overflow: TextOverflow.ellipsis),
+                      Text(lesson['description'], style: TextStyle(fontSize: 12, color: AppTheme.textSecondary), maxLines: 2, overflow: TextOverflow.ellipsis),
                     ],
                   ])),
-                  const Icon(Icons.chevron_right, color: AppTheme.textLight),
+                  Icon(Icons.chevron_right, color: AppTheme.textLight),
                 ])),
               );
             },
@@ -241,9 +241,9 @@ class _LearnScreenState extends State<LearnScreen> {
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Center(child: Container(width: 40, height: 4, decoration: BoxDecoration(color: AppTheme.textLight, borderRadius: BorderRadius.circular(2)))),
             const SizedBox(height: 20),
-            Text(lesson['title'] ?? 'Lesson', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: AppTheme.textPrimary)),
+            Text(lesson['title'] ?? 'Lesson', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: AppTheme.textPrimary)),
             const SizedBox(height: 16),
-            Text(lesson['content'] ?? lesson['description'] ?? 'Content coming soon...', style: const TextStyle(fontSize: 14, color: AppTheme.textSecondary, height: 1.6)),
+            Text(lesson['content'] ?? lesson['description'] ?? 'Content coming soon...', style: TextStyle(fontSize: 14, color: AppTheme.textSecondary, height: 1.6)),
             const SizedBox(height: 24),
             SizedBox(width: double.infinity, child: ElevatedButton.icon(
               onPressed: () {

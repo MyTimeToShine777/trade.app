@@ -168,7 +168,7 @@ class ClayInput extends StatelessWidget {
       children: [
         if (labelText != null) Padding(
           padding: const EdgeInsets.only(bottom: 8, left: 4),
-          child: Text(labelText!, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.textSecondary, letterSpacing: 0.5)),
+          child: Text(labelText!, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.textSecondary, letterSpacing: 0.5)),
         ),
         Container(
           decoration: BoxDecoration(
@@ -179,7 +179,7 @@ class ClayInput extends StatelessWidget {
           child: TextFormField(
             controller: controller, obscureText: obscureText, keyboardType: keyboardType,
             onChanged: onChanged, onFieldSubmitted: onSubmitted, maxLines: maxLines,
-            style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: AppTheme.textPrimary),
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: AppTheme.textPrimary),
             decoration: InputDecoration(
               hintText: hintText,
               hintStyle: TextStyle(color: AppTheme.textSecondary.withValues(alpha: 0.5), fontWeight: FontWeight.w400),
@@ -258,7 +258,7 @@ class ClayStatCard extends StatelessWidget {
         const SizedBox(height: 14),
         Text(value, style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800, color: valueColor ?? AppTheme.textPrimary)),
         const SizedBox(height: 2),
-        Text(label, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w500, color: AppTheme.textSecondary)),
+        Text(label, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500, color: AppTheme.textSecondary)),
         if (subtitle != null) ...[const SizedBox(height: 2), Text(subtitle!, style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: subtitle!.contains('-') ? AppTheme.red : AppTheme.green))],
       ]),
     );

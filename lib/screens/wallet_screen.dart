@@ -31,15 +31,23 @@ class _WalletScreenState extends State<WalletScreen> {
     final wallet = context.watch<WalletProvider>();
     final auth = context.watch<AuthProvider>();
 
+    // Show error snackbar when wallet has error
+    if (wallet.error != null) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(wallet.error!), backgroundColor: AppTheme.red));
+      });
+    }
+
     return Scaffold(
       backgroundColor: AppTheme.bgColor,
-      body: SafeArea(child: CustomScrollView(slivers: [
+      body: SafeArea(child: Stack(children: [
+        CustomScrollView(slivers: [
         SliverToBoxAdapter(child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
           child: Row(children: [
             ClayIconButton(icon: Icons.arrow_back, onTap: () => Navigator.pop(context)),
             const SizedBox(width: 14),
-            const Expanded(child: Text('Wallet', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
+            Expanded(child: Text('Wallet', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
           ]),
         )),
 
@@ -57,7 +65,7 @@ class _WalletScreenState extends State<WalletScreen> {
         SliverToBoxAdapter(child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Text('Quick Add', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppTheme.textSecondary)),
+            Text('Quick Add', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppTheme.textSecondary)),
             const SizedBox(height: 12),
             Row(children: [
               for (final amt in [10000, 50000, 100000, 500000]) ...[
@@ -66,7 +74,7 @@ class _WalletScreenState extends State<WalletScreen> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     decoration: BoxDecoration(color: AppTheme.cardColor, borderRadius: BorderRadius.circular(14), border: Border.all(color: AppTheme.border, width: 1)),
-                    child: Center(child: Text('₹${amt >= 100000 ? '${amt ~/ 100000}L' : '${amt ~/ 1000}K'}', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppTheme.accent))),
+                    child: Center(child: Text('₹${amt >= 100000 ? '${amt ~/ 100000}L' : '${amt ~/ 1000}K'}', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppTheme.accent))),
                   ),
                 )),
                 if (amt != 500000) const SizedBox(width: 8),
@@ -99,7 +107,7 @@ class _WalletScreenState extends State<WalletScreen> {
         SliverToBoxAdapter(child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 24, 20, 12),
           child: Row(children: [
-            const Icon(Icons.history, size: 18, color: AppTheme.accent),
+            Icon(Icons.history, size: 18, color: AppTheme.accent),
             const SizedBox(width: 8),
             Text('History (${wallet.transactions.length})', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800)),
           ]),
@@ -122,8 +130,8 @@ class _WalletScreenState extends State<WalletScreen> {
                 ),
                 const SizedBox(width: 12),
                 Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(type, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
-                  Text(t['date'] ?? t['created_at'] ?? '', style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+                  Text(type, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
+                  Text(t['date'] ?? t['created_at'] ?? '', style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
                 ])),
                 Text('${isDeposit ? '+' : '-'}${_fmt.format((t['amount'] ?? 0).toDouble().abs())}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: isDeposit ? AppTheme.green : AppTheme.red)),
               ])),
@@ -139,6 +147,12 @@ class _WalletScreenState extends State<WalletScreen> {
             final ok = await showDialog<bool>(context: context, builder: (c) => AlertDialog(title: const Text('Reset Balance?'), content: const Text('This will reset to ₹10,00,000'), actions: [TextButton(onPressed: () => Navigator.pop(c, false), child: const Text('Cancel')), TextButton(onPressed: () => Navigator.pop(c, true), child: const Text('Reset', style: TextStyle(color: AppTheme.red)))]));
             if (ok == true) { await wallet.resetBalance(); if (mounted) auth.refreshBalance(); }
           }, child: const Text('Reset Balance', style: TextStyle(color: AppTheme.red, fontWeight: FontWeight.w700))),
+        )),
+      ])),
+      if (wallet.isLoading)
+        Positioned.fill(child: Container(
+          color: Colors.black26,
+          child: Center(child: CircularProgressIndicator(color: AppTheme.accent)),
         )),
       ])),
     );

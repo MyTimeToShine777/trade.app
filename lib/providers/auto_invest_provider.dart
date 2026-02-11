@@ -179,7 +179,10 @@ class AutoInvestProvider extends ChangeNotifier {
       final data = await ApiService.get('/auto-invest/history');
       _history = List<Map<String, dynamic>>.from(data['history'] ?? []);
       notifyListeners();
-    } catch (_) {}
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+    }
   }
 
   void clearError() {

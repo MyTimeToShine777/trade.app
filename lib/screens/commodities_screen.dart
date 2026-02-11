@@ -83,7 +83,7 @@ class _CommoditiesScreenState extends State<CommoditiesScreen> {
           child: Row(children: [
             ClayIconButton(icon: Icons.arrow_back, onTap: () => Navigator.pop(context)),
             const SizedBox(width: 14),
-            const Expanded(child: Text('Commodities', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
+            Expanded(child: Text('Commodities', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
           ]),
         )),
 
@@ -120,11 +120,11 @@ class _CommoditiesScreenState extends State<CommoditiesScreen> {
                     ),
                     const SizedBox(width: 14),
                     Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Text(name, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
-                      Text(symbol, style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
+                      Text(name, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+                      Text(symbol, style: TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
                     ])),
                     Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                      if (price > 0) Text(_fmt.format(price), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
+                      if (price > 0) Text(_fmt.format(price), style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                         decoration: BoxDecoration(color: (isPos ? AppTheme.green : AppTheme.red).withValues(alpha: 0.12), borderRadius: BorderRadius.circular(6)),

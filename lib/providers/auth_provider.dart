@@ -133,6 +133,8 @@ class AuthProvider extends ChangeNotifier {
       _user = data['user'] ?? data;
       await _saveUser(_user!);
       notifyListeners();
-    } catch (_) {}
+    } catch (e) {
+      debugPrint('[Auth] refreshBalance failed: $e');
+    }
   }
 }

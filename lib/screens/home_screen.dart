@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 child: const Center(child: Text('💹', style: TextStyle(fontSize: 24))),
               ),
               const SizedBox(width: 14),
-              const Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+              Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
                 Text('Pugazh Stocks', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
                 Text('Paper Trading 📄', style: TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
               ])),
@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                 child: Container(
                   width: 36, height: 36,
                   decoration: BoxDecoration(color: AppTheme.surfaceColor, borderRadius: BorderRadius.circular(10)),
-                  child: const Center(child: Text('✕', style: TextStyle(fontSize: 16, color: AppTheme.textSecondary))),
+                  child: Center(child: Text('✕', style: TextStyle(fontSize: 16, color: AppTheme.textSecondary))),
                 ),
               ),
             ]),
@@ -151,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
         child: Row(children: [
           Text(emoji, style: const TextStyle(fontSize: 18)),
           const SizedBox(width: 14),
-          Text(label, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: AppTheme.textPrimary)),
+          Text(label, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: AppTheme.textPrimary)),
         ]),
       ),
     );

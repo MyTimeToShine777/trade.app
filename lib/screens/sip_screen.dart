@@ -40,7 +40,7 @@ class _SipScreenState extends State<SipScreen> with SingleTickerProviderStateMix
           child: Row(children: [
             ClayIconButton(icon: Icons.arrow_back, onTap: () => Navigator.pop(context)),
             const SizedBox(width: 14),
-            const Expanded(child: Text('SIP Plans', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
+            Expanded(child: Text('SIP Plans', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
           ]),
         ),
         const SizedBox(height: 16),
@@ -68,9 +68,9 @@ class _SipScreenState extends State<SipScreen> with SingleTickerProviderStateMix
     final sip = context.watch<SipProvider>();
     return sip.plans.isEmpty
       ? Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
-          const Icon(Icons.repeat, size: 60, color: AppTheme.textLight),
+          Icon(Icons.repeat, size: 60, color: AppTheme.textLight),
           const SizedBox(height: 12),
-          const Text('No SIP plans', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.textSecondary)),
+          Text('No SIP plans', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.textSecondary)),
           const SizedBox(height: 20),
           Padding(padding: const EdgeInsets.symmetric(horizontal: 60), child: ClayButton(gradient: AppTheme.accentGradient, isSmall: true, onPressed: () => _showCreateSipDialog(), child: const Text('Create SIP', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)))),
         ]))
@@ -84,7 +84,7 @@ class _SipScreenState extends State<SipScreen> with SingleTickerProviderStateMix
               child: ClayCard(depth: 0.5, padding: const EdgeInsets.all(16), child: Row(children: [
                 Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Text(p['symbol'] ?? p['name'] ?? 'SIP ${i + 1}', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
-                  Text('${_fmt.format((p['amount'] ?? 0).toDouble())} / ${p['frequency'] ?? 'month'}', style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
+                  Text('${_fmt.format((p['amount'] ?? 0).toDouble())} / ${p['frequency'] ?? 'month'}', style: TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
                 ])),
                 Switch(value: p['active'] ?? true, activeTrackColor: AppTheme.accent, onChanged: (v) => context.read<SipProvider>().togglePlan((p['id'] ?? '').toString(), v)),
               ])),
@@ -143,7 +143,7 @@ class _SipScreenState extends State<SipScreen> with SingleTickerProviderStateMix
         child: Column(mainAxisSize: MainAxisSize.min, children: [
           Container(width: 40, height: 4, decoration: BoxDecoration(color: AppTheme.surfaceColor, borderRadius: BorderRadius.circular(2))),
           const SizedBox(height: 20),
-          const Text('📊 New SIP Plan', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: AppTheme.textPrimary)),
+          Text('📊 New SIP Plan', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: AppTheme.textPrimary)),
           const SizedBox(height: 20),
           ClayInput(controller: symbolCtrl, labelText: 'STOCK / FUND SYMBOL', hintText: 'e.g. RELIANCE, SBIN', prefixIcon: Icons.search),
           const SizedBox(height: 16),

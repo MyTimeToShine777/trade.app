@@ -48,7 +48,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
           child: Row(children: [
             ClayIconButton(icon: Icons.arrow_back, onTap: () => Navigator.pop(context)),
             const SizedBox(width: 14),
-            const Expanded(child: Text('100 Days Challenge', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
+            Expanded(child: Text('100 Days Challenge', style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
           ]),
         )),
 

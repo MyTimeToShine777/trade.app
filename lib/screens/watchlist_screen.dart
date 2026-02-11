@@ -63,7 +63,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
               child: Row(children: [
                 ClayIconButton(icon: Icons.arrow_back, onTap: () => Navigator.pop(context)),
                 const SizedBox(width: 14),
-                Expanded(child: Text('Watchlist (${p.watchlist.length})', style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
+                Expanded(child: Text('Watchlist (${p.watchlist.length})', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
                 GestureDetector(
                   onTap: () => setState(() { _showSearch = !_showSearch; _searchResults = []; _searchCtrl.clear(); }),
                   child: Container(
@@ -84,7 +84,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                   decoration: BoxDecoration(color: AppTheme.surfaceColor, borderRadius: BorderRadius.circular(14), border: Border.all(color: AppTheme.border)),
                   child: TextField(
                     controller: _searchCtrl,
-                    style: const TextStyle(color: AppTheme.textPrimary, fontSize: 14),
+                    style: TextStyle(color: AppTheme.textPrimary, fontSize: 14),
                     decoration: const InputDecoration(
                       hintText: 'Search stocks to add…',
                       hintStyle: TextStyle(color: AppTheme.textLight, fontSize: 14),
@@ -111,8 +111,8 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                       final name = r['name'] ?? r['longName'] ?? '';
                       return ListTile(
                         dense: true,
-                        title: Text(sym, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
-                        subtitle: Text(name, style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis),
+                        title: Text(sym, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
+                        subtitle: Text(name, style: TextStyle(fontSize: 11, color: AppTheme.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis),
                         trailing: GestureDetector(
                           onTap: () async {
                             await p.addToWatchlist(sym, name);
@@ -124,7 +124,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                             decoration: BoxDecoration(color: AppTheme.accent.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(8)),
-                            child: const Text('Add', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.accent)),
+                            child: Text('Add', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.accent)),
                           ),
                         ),
                       );
@@ -144,9 +144,9 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
               SliverToBoxAdapter(child: Padding(padding: const EdgeInsets.all(60), child: Column(mainAxisSize: MainAxisSize.min, children: [
                 const Text('👀', style: TextStyle(fontSize: 48)),
                 const SizedBox(height: 12),
-                const Text('Watchlist is empty', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.textSecondary)),
+                Text('Watchlist is empty', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.textSecondary)),
                 const SizedBox(height: 6),
-                const Text('Tap ➕ above to search and add stocks', style: TextStyle(fontSize: 13, color: AppTheme.textLight)),
+                Text('Tap ➕ above to search and add stocks', style: TextStyle(fontSize: 13, color: AppTheme.textLight)),
               ])))
             // Grid
             else SliverPadding(
@@ -164,15 +164,15 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                       onTap: () => Navigator.pushNamed(context, '/stock-detail', arguments: w['symbol']),
                       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                         Row(children: [
-                          Expanded(child: Text(w['symbol'] ?? '', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+                          Expanded(child: Text(w['symbol'] ?? '', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
                           GestureDetector(
                             onTap: () async { await p.removeFromWatchlist(w['symbol']); },
-                            child: const Icon(Icons.close, size: 16, color: AppTheme.textLight),
+                            child: Icon(Icons.close, size: 16, color: AppTheme.textLight),
                           ),
                         ]),
-                        Text(w['name'] ?? '', style: const TextStyle(fontSize: 10, color: AppTheme.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis),
+                        Text(w['name'] ?? '', style: TextStyle(fontSize: 10, color: AppTheme.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis),
                         const Spacer(),
-                        Text(price > 0 ? _fmt.format(price) : '--', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
+                        Text(price > 0 ? _fmt.format(price) : '--', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
                         const SizedBox(height: 4),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),

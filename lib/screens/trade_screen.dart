@@ -41,11 +41,11 @@ class _TradeScreenState extends State<TradeScreen> {
               child: Container(
                 width: 40, height: 40,
                 decoration: BoxDecoration(color: AppTheme.surfaceColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: AppTheme.border)),
-                child: const Center(child: Text('☰', style: TextStyle(fontSize: 18, color: AppTheme.textPrimary))),
+                child: Center(child: Text('☰', style: TextStyle(fontSize: 18, color: AppTheme.textPrimary))),
               ),
             ),
             const SizedBox(width: 14),
-            const Expanded(child: Text('📈 Trade', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
+            Expanded(child: Text('📈 Trade', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
           ]),
         )),
 
@@ -75,9 +75,9 @@ class _TradeScreenState extends State<TradeScreen> {
             child: Row(children: [
               const Text('📈', style: TextStyle(fontSize: 16)),
               const SizedBox(width: 8),
-              const Text('All Stocks', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+              Text('All Stocks', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
               const Spacer(),
-              Text('${market.stocks.length} stocks 📊', style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
+              Text('${market.stocks.length} stocks 📊', style: TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
             ]),
           )),
 
@@ -118,11 +118,11 @@ class _TradeScreenState extends State<TradeScreen> {
           ),
           const SizedBox(width: 12),
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(stock['symbol'] ?? '', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
-            Text(stock['name'] ?? stock['longName'] ?? '', style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis),
+            Text(stock['symbol'] ?? '', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+            Text(stock['name'] ?? stock['longName'] ?? '', style: TextStyle(fontSize: 11, color: AppTheme.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis),
           ])),
           Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-            Text(fmt.format(price), style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
+            Text(fmt.format(price), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(color: (isPos ? AppTheme.green : AppTheme.red).withValues(alpha: 0.12), borderRadius: BorderRadius.circular(6)),
@@ -155,10 +155,10 @@ class _TradeScreenState extends State<TradeScreen> {
             const SizedBox(height: 20),
             Row(children: [
               Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(stock['symbol'] ?? '', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: AppTheme.textPrimary)),
-                Text(stock['name'] ?? '', style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
+                Text(stock['symbol'] ?? '', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: AppTheme.textPrimary)),
+                Text(stock['name'] ?? '', style: TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
               ])),
-              Text(fmt.format(price), style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: AppTheme.textPrimary)),
+              Text(fmt.format(price), style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: AppTheme.textPrimary)),
             ]),
             const SizedBox(height: 20),
             // AI tip
@@ -186,8 +186,8 @@ class _TradeScreenState extends State<TradeScreen> {
             ClayInput(controller: qtyCtrl, labelText: 'QUANTITY', hintText: '1', prefixIcon: Icons.numbers, keyboardType: TextInputType.number, onChanged: (_) => setSheetState(() {})),
             const SizedBox(height: 16),
             ClayCard(depth: 0.4, padding: const EdgeInsets.all(14), child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              const Text('Estimated Total', style: TextStyle(fontSize: 13, color: AppTheme.textSecondary)),
-              Text(fmt.format(total), style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+              Text('Estimated Total', style: TextStyle(fontSize: 13, color: AppTheme.textSecondary)),
+              Text(fmt.format(total), style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
             ])),
             const SizedBox(height: 20),
             ClayButton(

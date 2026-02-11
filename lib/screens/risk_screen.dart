@@ -37,7 +37,7 @@ class _RiskScreenState extends State<RiskScreen> {
           child: Row(children: [
             ClayIconButton(icon: Icons.arrow_back, onTap: () => Navigator.pop(context)),
             const SizedBox(width: 14),
-            const Expanded(child: Text('Risk Analysis', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
+            Expanded(child: Text('Risk Analysis', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
           ]),
         )),
 
@@ -45,7 +45,7 @@ class _RiskScreenState extends State<RiskScreen> {
         SliverToBoxAdapter(child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
           child: ClayCard(padding: const EdgeInsets.all(24), child: Column(children: [
-            const Text('Risk Score', style: TextStyle(fontSize: 14, color: AppTheme.textSecondary, fontWeight: FontWeight.w500)),
+            Text('Risk Score', style: TextStyle(fontSize: 14, color: AppTheme.textSecondary, fontWeight: FontWeight.w500)),
             const SizedBox(height: 12),
             Stack(alignment: Alignment.center, children: [
               SizedBox(
@@ -112,7 +112,7 @@ class _RiskScreenState extends State<RiskScreen> {
       const SizedBox(width: 12),
       Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
-        Text(desc, style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary, height: 1.3)),
+        Text(desc, style: TextStyle(fontSize: 12, color: AppTheme.textSecondary, height: 1.3)),
       ])),
     ]));
   }

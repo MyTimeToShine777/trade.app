@@ -44,9 +44,11 @@ void main() async {
 
 class PugazhStocksApp extends StatelessWidget {
   const PugazhStocksApp({super.key});
+  static final navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
+    NotificationService.navigatorKey = navigatorKey;
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
@@ -60,10 +62,11 @@ class PugazhStocksApp extends StatelessWidget {
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, tp, _) {
+          // Bind the global singleton so AppTheme.bgColor etc. auto-update
+          AppTheme.bind(tp);
           final isDark = tp.isDark;
           final baseText = isDark ? ThemeData.dark().textTheme : ThemeData.light().textTheme;
-          return MaterialApp(
-            title: 'Pugazh Stocks',
+          return MaterialApp(            navigatorKey: PugazhStocksApp.navigatorKey,            title: 'Pugazh Stocks',
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               brightness: isDark ? Brightness.dark : Brightness.light,

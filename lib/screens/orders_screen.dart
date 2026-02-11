@@ -35,7 +35,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
           child: Row(children: [
             ClayIconButton(icon: Icons.arrow_back, onTap: () => Navigator.pop(context)),
             const SizedBox(width: 14),
-            const Expanded(child: Text('Orders', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
+            Expanded(child: Text('Orders', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
           ]),
         )),
 
@@ -50,9 +50,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
 
         if (filtered.isEmpty)
           SliverToBoxAdapter(child: Padding(padding: const EdgeInsets.all(60), child: Column(mainAxisSize: MainAxisSize.min, children: [
-            const Icon(Icons.receipt_long_outlined, size: 60, color: AppTheme.textLight),
+            Icon(Icons.receipt_long_outlined, size: 60, color: AppTheme.textLight),
             const SizedBox(height: 12),
-            const Text('No orders found', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.textSecondary)),
+            Text('No orders found', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.textSecondary)),
           ])))
         else SliverList(delegate: SliverChildBuilderDelegate(
           (_, i) {
@@ -70,8 +70,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                 ),
                 const SizedBox(width: 12),
                 Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text('${o['symbol'] ?? ''} · $type', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
-                  Text('${o['quantity'] ?? 0} × ${_fmt.format((o['price'] ?? 0).toDouble())}', style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+                  Text('${o['symbol'] ?? ''} · $type', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
+                  Text('${o['quantity'] ?? 0} × ${_fmt.format((o['price'] ?? 0).toDouble())}', style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
                 ])),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),

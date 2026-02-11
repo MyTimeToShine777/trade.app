@@ -65,9 +65,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 child: const Center(child: Text('₹', style: TextStyle(fontSize: 44, fontWeight: FontWeight.w900, color: Colors.white))),
               ),
               const SizedBox(height: 24),
-              const Text('Pugazh Stocks', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900, color: AppTheme.textPrimary, letterSpacing: -0.5)),
+              Text('Pugazh Stocks', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900, color: AppTheme.textPrimary, letterSpacing: -0.5)),
               const SizedBox(height: 6),
-              Text(_isRegister ? 'Create your trading account' : 'Welcome back, trader!', style: const TextStyle(fontSize: 14, color: AppTheme.textSecondary)),
+              Text(_isRegister ? 'Create your trading account' : 'Welcome back, trader!', style: TextStyle(fontSize: 14, color: AppTheme.textSecondary)),
               const SizedBox(height: 40),
 
               // Form card
@@ -115,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
               ClayCard(
                 depth: 0.6,
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-                child: const Row(children: [
+                child: Row(children: [
                   Icon(Icons.info_outline, color: AppTheme.accent, size: 18),
                   SizedBox(width: 10),
                   Expanded(child: Text('Paper trading with ₹10,00,000 virtual money. No real money involved.', style: TextStyle(fontSize: 12, color: AppTheme.textSecondary))),

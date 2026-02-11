@@ -37,7 +37,7 @@ class ApiService {
     final response = await http.get(
       Uri.parse('${ApiConfig.baseUrl}$endpoint'),
       headers: _headers(),
-    );
+    ).timeout(const Duration(seconds: 30));
     return _handleResponse(response);
   }
 
@@ -47,7 +47,7 @@ class ApiService {
       Uri.parse('${ApiConfig.baseUrl}$endpoint'),
       headers: _headers(),
       body: body != null ? jsonEncode(body) : null,
-    );
+    ).timeout(const Duration(seconds: 30));
     return _handleResponse(response);
   }
 
@@ -57,7 +57,7 @@ class ApiService {
       Uri.parse('${ApiConfig.baseUrl}$endpoint'),
       headers: _headers(),
       body: body != null ? jsonEncode(body) : null,
-    );
+    ).timeout(const Duration(seconds: 30));
     return _handleResponse(response);
   }
 
@@ -67,7 +67,7 @@ class ApiService {
     final response = await http.delete(
       Uri.parse('${ApiConfig.baseUrl}$endpoint'),
       headers: _headers(),
-    );
+    ).timeout(const Duration(seconds: 30));
     return _handleResponse(response);
   }
 

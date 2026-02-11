@@ -87,7 +87,7 @@ class _StockDetailScreenState extends State<StockDetailScreen>
                       color: AppTheme.surfaceColor,
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(color: AppTheme.border)),
-                  child: const Center(
+                  child: Center(
                       child: Text('←',
                           style: TextStyle(
                               fontSize: 20, color: AppTheme.textPrimary))),
@@ -99,12 +99,12 @@ class _StockDetailScreenState extends State<StockDetailScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                     Text(_symbol ?? '',
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w900,
                             color: AppTheme.textPrimary)),
                     Text(stock?['name'] ?? stock?['longName'] ?? '',
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 11, color: AppTheme.textSecondary),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis),
@@ -155,7 +155,7 @@ class _StockDetailScreenState extends State<StockDetailScreen>
                   children: [
                     Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
                       Text(_fmt.format(price),
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontSize: 34,
                               fontWeight: FontWeight.w900,
                               color: AppTheme.textPrimary,
@@ -218,7 +218,7 @@ class _StockDetailScreenState extends State<StockDetailScreen>
                   Row(children: [
                     const Text('📊', style: TextStyle(fontSize: 16)),
                     const SizedBox(width: 8),
-                    const Text('Price Chart',
+                    Text('Price Chart',
                         style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w800,
@@ -349,10 +349,10 @@ class _StockDetailScreenState extends State<StockDetailScreen>
           child: Column(children: [
         Text(label,
             style:
-                const TextStyle(fontSize: 10, color: AppTheme.textSecondary)),
+                TextStyle(fontSize: 10, color: AppTheme.textSecondary)),
         const SizedBox(height: 2),
         Text(value,
-            style: const TextStyle(
+            style: TextStyle(
                 fontSize: 11,
                 fontWeight: FontWeight.w700,
                 color: AppTheme.textPrimary)),
@@ -385,16 +385,16 @@ class _StockDetailScreenState extends State<StockDetailScreen>
 
   Widget _buildChart(MarketProvider market) {
     if (market.isLoadingChart)
-      return const Center(
+      return Center(
           child: CircularProgressIndicator(color: AppTheme.accent));
     final chart = market.stockChart;
     if (chart == null)
-      return const Center(
+      return Center(
           child: Text('📈 Loading chart...',
               style: TextStyle(color: AppTheme.textSecondary)));
     final candles = List<Map<String, dynamic>>.from(chart['candles'] ?? []);
     if (candles.isEmpty)
-      return const Center(
+      return Center(
           child: Text('No chart data',
               style: TextStyle(color: AppTheme.textSecondary)));
 
@@ -409,7 +409,7 @@ class _StockDetailScreenState extends State<StockDetailScreen>
       }
     }
     if (spots.isEmpty)
-      return const Center(
+      return Center(
           child:
               Text('No data', style: TextStyle(color: AppTheme.textSecondary)));
     final range = maxY - minY;
@@ -527,19 +527,19 @@ class _StockDetailScreenState extends State<StockDetailScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                     Text('AI: $action',
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w900,
                             color: AppTheme.textPrimary)),
                     Text('Confidence: $confidence  •  Risk: $riskLevel',
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 12, color: AppTheme.textSecondary)),
                   ]))
             ]),
             if (reason.isNotEmpty) ...[
               const SizedBox(height: 10),
               Text(reason,
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 13, color: AppTheme.textPrimary, height: 1.5))
             ],
           ])),
@@ -569,7 +569,7 @@ class _StockDetailScreenState extends State<StockDetailScreen>
         ClayCard(
             padding: const EdgeInsets.all(14),
             child: Text(keyInsight,
-                style: const TextStyle(
+                style: TextStyle(
                     fontSize: 13, color: AppTheme.textPrimary, height: 1.4))),
         const SizedBox(height: 12)
       ],
@@ -701,7 +701,7 @@ class _StockDetailScreenState extends State<StockDetailScreen>
                         color: AppTheme.accent.withValues(alpha: 0.15),
                         borderRadius: BorderRadius.circular(6)),
                     child: Text(cap,
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w700,
                             color: AppTheme.accent))),
@@ -726,7 +726,7 @@ class _StockDetailScreenState extends State<StockDetailScreen>
                 gradient: AppTheme.accentGradient),
             const SizedBox(height: 6),
             Text('Market Cap: ${_fmtNum(marketCap)}',
-                style: const TextStyle(
+                style: TextStyle(
                     fontSize: 11, color: AppTheme.textSecondary)),
           ])),
     ]);
@@ -778,7 +778,7 @@ class _StockDetailScreenState extends State<StockDetailScreen>
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                  const Text('Fundamental Score',
+                  Text('Fundamental Score',
                       style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w800,
@@ -798,7 +798,7 @@ class _StockDetailScreenState extends State<StockDetailScreen>
                                 color: recC))),
                     const SizedBox(width: 8),
                     Text('Risk: $risk',
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 11, color: AppTheme.textSecondary))
                   ]),
                 ])),
@@ -814,7 +814,7 @@ class _StockDetailScreenState extends State<StockDetailScreen>
                 SizedBox(
                     width: 90,
                     child: Text(e.key.replaceAll('_', ' '),
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w600,
                             color: AppTheme.textSecondary))),
@@ -897,7 +897,7 @@ class _StockDetailScreenState extends State<StockDetailScreen>
               const SizedBox(width: 10),
               Expanded(
                   child: Text(techVerdict.toString(),
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontSize: 13,
                           fontWeight: FontWeight.w700,
                           color: AppTheme.textPrimary)))
@@ -947,7 +947,7 @@ class _StockDetailScreenState extends State<StockDetailScreen>
                                   color: AppTheme.green)),
                           ...support.take(3).map((s) => Text(
                               _fmt.format(_toDouble(s)),
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
                                   color: AppTheme.textPrimary)))
@@ -968,7 +968,7 @@ class _StockDetailScreenState extends State<StockDetailScreen>
                                   color: AppTheme.red)),
                           ...resistance.take(3).map((r) => Text(
                               _fmt.format(_toDouble(r)),
-                              style: const TextStyle(
+                              style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w600,
                                   color: AppTheme.textPrimary)))
@@ -981,7 +981,7 @@ class _StockDetailScreenState extends State<StockDetailScreen>
         ClayCard(
             padding: const EdgeInsets.all(14),
             child: Text(candleSignal,
-                style: const TextStyle(
+                style: TextStyle(
                     fontSize: 13, color: AppTheme.textPrimary, height: 1.4)))
       ],
       if (trendAnalysis.isNotEmpty) ...[
@@ -990,7 +990,7 @@ class _StockDetailScreenState extends State<StockDetailScreen>
         ClayCard(
             padding: const EdgeInsets.all(14),
             child: Text(trendAnalysis,
-                style: const TextStyle(
+                style: TextStyle(
                     fontSize: 13, color: AppTheme.textPrimary, height: 1.4)))
       ],
     ]);
@@ -1000,7 +1000,7 @@ class _StockDetailScreenState extends State<StockDetailScreen>
   Widget _label(String t) => Padding(
       padding: const EdgeInsets.only(bottom: 8, top: 4),
       child: Text(t,
-          style: const TextStyle(
+          style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w800,
               color: AppTheme.textPrimary)));
@@ -1008,15 +1008,15 @@ class _StockDetailScreenState extends State<StockDetailScreen>
       padding: const EdgeInsets.all(40),
       child: Center(
           child: Column(mainAxisSize: MainAxisSize.min, children: [
-        const CircularProgressIndicator(color: AppTheme.accent),
+        CircularProgressIndicator(color: AppTheme.accent),
         const SizedBox(height: 12),
-        Text(m, style: const TextStyle(color: AppTheme.textSecondary))
+        Text(m, style: TextStyle(color: AppTheme.textSecondary))
       ])));
   Widget _emptyWidget(String m) => Padding(
       padding: const EdgeInsets.all(40),
       child: Center(
           child:
-              Text(m, style: const TextStyle(color: AppTheme.textSecondary))));
+              Text(m, style: TextStyle(color: AppTheme.textSecondary))));
   Widget _infoCard(String l, String v, Color c) => Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -1026,7 +1026,7 @@ class _StockDetailScreenState extends State<StockDetailScreen>
       child: Column(children: [
         Text(l,
             style:
-                const TextStyle(fontSize: 10, color: AppTheme.textSecondary)),
+                TextStyle(fontSize: 10, color: AppTheme.textSecondary)),
         const SizedBox(height: 4),
         Text(v,
             style:
@@ -1044,7 +1044,7 @@ class _StockDetailScreenState extends State<StockDetailScreen>
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
         Text(l,
             style:
-                const TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+                TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
         Text(v,
             style: TextStyle(
                 fontSize: 13,
@@ -1058,7 +1058,7 @@ class _StockDetailScreenState extends State<StockDetailScreen>
         const SizedBox(width: 8),
         Expanded(
             child: Text(t,
-                style: const TextStyle(
+                style: TextStyle(
                     fontSize: 12, color: AppTheme.textPrimary, height: 1.4)))
       ]));
   Widget _adviceRow(String l, String a) => Padding(
@@ -1068,13 +1068,13 @@ class _StockDetailScreenState extends State<StockDetailScreen>
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(l,
-                style: const TextStyle(
+                style: TextStyle(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
                     color: AppTheme.accent)),
             const SizedBox(height: 4),
             Text(a,
-                style: const TextStyle(
+                style: TextStyle(
                     fontSize: 12, color: AppTheme.textPrimary, height: 1.3))
           ])));
   double _toDouble(dynamic v) =>
@@ -1109,13 +1109,13 @@ class _StockDetailScreenState extends State<StockDetailScreen>
                             borderRadius: BorderRadius.circular(2))),
                     const SizedBox(height: 20),
                     Text('${type == 'BUY' ? '💰' : '💸'} $type $_symbol',
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w900,
                             color: AppTheme.textPrimary)),
                     const SizedBox(height: 4),
                     Text('at ${_fmt.format(price)}',
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 14, color: AppTheme.textSecondary)),
                     const SizedBox(height: 20),
                     ClayInput(
@@ -1132,12 +1132,12 @@ class _StockDetailScreenState extends State<StockDetailScreen>
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text('Total',
+                              Text('Total',
                                   style: TextStyle(
                                       fontSize: 13,
                                       color: AppTheme.textSecondary)),
                               Text(_fmt.format(price * qty),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w800,
                                       color: AppTheme.textPrimary))

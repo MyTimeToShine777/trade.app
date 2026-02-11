@@ -29,38 +29,59 @@ class WalletProvider extends ChangeNotifier {
   }
 
   Future<bool> deposit(double amount) async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
     try {
       final data = await ApiService.post('/wallet/deposit', {'amount': amount});
       _balance = (data['balance'] ?? _balance + amount).toDouble();
-      await loadWallet();
+      _transactions = List<Map<String, dynamic>>.from(data['transactions'] ?? _transactions);
+      _isLoading = false;
+      notifyListeners();
       return true;
     } catch (e) {
       _error = e.toString();
+      _isLoading = false;
       notifyListeners();
       return false;
     }
   }
 
   Future<bool> withdraw(double amount) async {
+    if (amount > _balance) {
+      _error = 'Insufficient balance';
+      notifyListeners();
+      return false;
+    }
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
     try {
       final data = await ApiService.post('/wallet/withdraw', {'amount': amount});
       _balance = (data['balance'] ?? _balance - amount).toDouble();
-      await loadWallet();
+      _transactions = List<Map<String, dynamic>>.from(data['transactions'] ?? _transactions);
+      _isLoading = false;
+      notifyListeners();
       return true;
     } catch (e) {
       _error = e.toString();
+      _isLoading = false;
       notifyListeners();
       return false;
     }
   }
 
   Future<bool> resetBalance() async {
+    _isLoading = true;
+    _error = null;
+    notifyListeners();
     try {
       await ApiService.post('/wallet/reset', {});
       await loadWallet();
       return true;
     } catch (e) {
       _error = e.toString();
+      _isLoading = false;
       notifyListeners();
       return false;
     }

@@ -77,11 +77,11 @@ class _ScreenerScreenState extends State<ScreenerScreen> {
               child: Container(
                 width: 40, height: 40,
                 decoration: BoxDecoration(color: AppTheme.surfaceColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: AppTheme.border)),
-                child: const Center(child: Text('←', style: TextStyle(fontSize: 20, color: AppTheme.textPrimary))),
+                child: Center(child: Text('←', style: TextStyle(fontSize: 20, color: AppTheme.textPrimary))),
               ),
             ),
             const SizedBox(width: 14),
-            const Expanded(child: Text('🔍 Screener', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
+            Expanded(child: Text('🔍 Screener', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
           ]),
         )),
 
@@ -89,7 +89,7 @@ class _ScreenerScreenState extends State<ScreenerScreen> {
         SliverToBoxAdapter(child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Text('📊 SECTOR', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.textSecondary, letterSpacing: 0.5)),
+            Text('📊 SECTOR', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.textSecondary, letterSpacing: 0.5)),
             const SizedBox(height: 8),
             SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(
               children: _sectors.map((s) => Padding(padding: const EdgeInsets.only(right: 8), child: GestureDetector(
@@ -112,7 +112,7 @@ class _ScreenerScreenState extends State<ScreenerScreen> {
         SliverToBoxAdapter(child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
           child: Row(children: [
-            const Text('⚙️ Sort: ', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.textSecondary)),
+            Text('⚙️ Sort: ', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.textSecondary)),
             ..._sortOptions.map((s) => Padding(padding: const EdgeInsets.only(right: 6), child: GestureDetector(
               onTap: () => setState(() => _sortBy = s['value']!),
               child: Container(
@@ -127,7 +127,7 @@ class _ScreenerScreenState extends State<ScreenerScreen> {
         // Results count
         SliverToBoxAdapter(child: Padding(
           padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
-          child: Text('${stocks.length} stocks found 📋', style: const TextStyle(fontSize: 13, color: AppTheme.textSecondary)),
+          child: Text('${stocks.length} stocks found 📋', style: TextStyle(fontSize: 13, color: AppTheme.textSecondary)),
         )),
 
         if (market.isLoading)
@@ -170,11 +170,11 @@ class _ScreenerScreenState extends State<ScreenerScreen> {
             ),
             const SizedBox(width: 10),
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(s['symbol'] ?? '', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
-              Text(s['name'] ?? '', style: const TextStyle(fontSize: 10, color: AppTheme.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis),
+              Text(s['symbol'] ?? '', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+              Text(s['name'] ?? '', style: TextStyle(fontSize: 10, color: AppTheme.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis),
             ])),
             Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-              Text(_fmt.format(price), style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
+              Text(_fmt.format(price), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                 decoration: BoxDecoration(color: (isPos ? AppTheme.green : AppTheme.red).withValues(alpha: 0.12), borderRadius: BorderRadius.circular(6)),
@@ -203,7 +203,7 @@ class _ScreenerScreenState extends State<ScreenerScreen> {
   Widget _metric(String label, String value, Color? c) => Expanded(child: Padding(
     padding: const EdgeInsets.only(right: 6),
     child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(label, style: const TextStyle(fontSize: 9, color: AppTheme.textLight)),
+      Text(label, style: TextStyle(fontSize: 9, color: AppTheme.textLight)),
       Text(value, style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: c ?? AppTheme.textSecondary)),
     ]),
   ));

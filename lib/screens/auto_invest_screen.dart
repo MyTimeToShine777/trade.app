@@ -43,10 +43,10 @@ class _AutoInvestScreenState extends State<AutoInvestScreen> with SingleTickerPr
               GestureDetector(onTap: () => Navigator.pop(context), child: Container(
                 width: 42, height: 42,
                 decoration: BoxDecoration(color: AppTheme.cardColor, borderRadius: BorderRadius.circular(14), border: Border.all(color: AppTheme.border)),
-                child: const Center(child: Text('←', style: TextStyle(fontSize: 20, color: AppTheme.textPrimary))),
+                child: Center(child: Text('←', style: TextStyle(fontSize: 20, color: AppTheme.textPrimary))),
               )),
               const SizedBox(width: 14),
-              const Expanded(child: Text('🤖 Auto Invest', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
+              Expanded(child: Text('🤖 Auto Invest', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
             ]),
           )),
           SliverToBoxAdapter(child: _buildDashboard(ai)),
@@ -194,8 +194,8 @@ class _AutoInvestScreenState extends State<AutoInvestScreen> with SingleTickerPr
                   context: context,
                   builder: (ctx) => AlertDialog(
                     backgroundColor: AppTheme.cardColor,
-                    title: const Text('Cancel Plan?', style: TextStyle(color: AppTheme.textPrimary)),
-                    content: const Text('This will permanently delete your current plan.', style: TextStyle(color: AppTheme.textSecondary)),
+                    title: Text('Cancel Plan?', style: TextStyle(color: AppTheme.textPrimary)),
+                    content: Text('This will permanently delete your current plan.', style: TextStyle(color: AppTheme.textSecondary)),
                     actions: [
                       TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('No')),
                       TextButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Yes, Cancel', style: TextStyle(color: AppTheme.red))),
@@ -225,28 +225,28 @@ class _AutoInvestScreenState extends State<AutoInvestScreen> with SingleTickerPr
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
       child: ClayCard(depth: 0.5, padding: const EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        const Text('🔬 Research Results', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+        Text('🔬 Research Results', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
         if (marketOutlook.isNotEmpty) ...[
           const SizedBox(height: 10),
           Container(
             width: double.infinity, padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(color: AppTheme.surfaceColor, borderRadius: BorderRadius.circular(12)),
             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const Text('📊 Market Outlook', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.accent)),
+              Text('📊 Market Outlook', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.accent)),
               const SizedBox(height: 6),
-              Text(marketOutlook, style: const TextStyle(fontSize: 12, color: AppTheme.textPrimary, height: 1.4), maxLines: 4, overflow: TextOverflow.ellipsis),
+              Text(marketOutlook, style: TextStyle(fontSize: 12, color: AppTheme.textPrimary, height: 1.4), maxLines: 4, overflow: TextOverflow.ellipsis),
             ]),
           ),
         ],
         if (news.isNotEmpty) ...[
           const SizedBox(height: 10),
-          const Text('📰 Key News', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.accent)),
+          Text('📰 Key News', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.accent)),
           const SizedBox(height: 6),
           ...news.take(3).map((n) => Padding(
             padding: const EdgeInsets.only(bottom: 4),
             child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              const Text('• ', style: TextStyle(color: AppTheme.textSecondary)),
-              Expanded(child: Text(n is Map ? (n['title'] ?? n.toString()) : n.toString(), style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary, height: 1.3), maxLines: 2, overflow: TextOverflow.ellipsis)),
+              Text('• ', style: TextStyle(color: AppTheme.textSecondary)),
+              Expanded(child: Text(n is Map ? (n['title'] ?? n.toString()) : n.toString(), style: TextStyle(fontSize: 11, color: AppTheme.textSecondary, height: 1.3), maxLines: 2, overflow: TextOverflow.ellipsis)),
             ]),
           )),
         ],
@@ -255,8 +255,8 @@ class _AutoInvestScreenState extends State<AutoInvestScreen> with SingleTickerPr
   }
 
   Widget _buildPicksTab(AutoInvestProvider ai) {
-    if (ai.isLoading) return const Center(child: CircularProgressIndicator(color: AppTheme.accent));
-    if (ai.picks.isEmpty) return const Center(child: Text('🎯 No picks yet.\nRun Research to get AI picks!', textAlign: TextAlign.center, style: TextStyle(color: AppTheme.textSecondary, fontSize: 14)));
+    if (ai.isLoading) return Center(child: CircularProgressIndicator(color: AppTheme.accent));
+    if (ai.picks.isEmpty) return Center(child: Text('🎯 No picks yet.\nRun Research to get AI picks!', textAlign: TextAlign.center, style: TextStyle(color: AppTheme.textSecondary, fontSize: 14)));
 
     return ListView.builder(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 40),
@@ -286,7 +286,7 @@ class _AutoInvestScreenState extends State<AutoInvestScreen> with SingleTickerPr
               Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(pick['symbol'] ?? pick['name'] ?? 'Pick ${i + 1}', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
                 const SizedBox(height: 4),
-                Text(pick['reason'] ?? pick['rationale'] ?? '', style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary), maxLines: 2, overflow: TextOverflow.ellipsis),
+                Text(pick['reason'] ?? pick['rationale'] ?? '', style: TextStyle(fontSize: 11, color: AppTheme.textSecondary), maxLines: 2, overflow: TextOverflow.ellipsis),
               ])),
               Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
                 Container(
@@ -295,7 +295,7 @@ class _AutoInvestScreenState extends State<AutoInvestScreen> with SingleTickerPr
                   child: Text(signal.toString().toUpperCase(), style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: isBuy ? AppTheme.green : AppTheme.red)),
                 ),
                 const SizedBox(height: 6),
-                Text('Score: $score', style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary, fontWeight: FontWeight.w600)),
+                Text('Score: $score', style: TextStyle(fontSize: 11, color: AppTheme.textSecondary, fontWeight: FontWeight.w600)),
               ]),
             ]),
             // Detailed info row
@@ -320,13 +320,13 @@ class _AutoInvestScreenState extends State<AutoInvestScreen> with SingleTickerPr
 
   Widget _pickDetail(String label, String value) {
     return Column(children: [
-      Text(value, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
-      Text(label, style: const TextStyle(fontSize: 9, color: AppTheme.textSecondary)),
+      Text(value, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
+      Text(label, style: TextStyle(fontSize: 9, color: AppTheme.textSecondary)),
     ]);
   }
 
   Widget _buildHistoryTab(AutoInvestProvider ai) {
-    if (ai.history.isEmpty) return const Center(child: Text('📜 No history yet.\nExecute some picks first!', textAlign: TextAlign.center, style: TextStyle(color: AppTheme.textSecondary, fontSize: 14)));
+    if (ai.history.isEmpty) return Center(child: Text('📜 No history yet.\nExecute some picks first!', textAlign: TextAlign.center, style: TextStyle(color: AppTheme.textSecondary, fontSize: 14)));
 
     return ListView.builder(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 40),
@@ -343,7 +343,7 @@ class _AutoInvestScreenState extends State<AutoInvestScreen> with SingleTickerPr
             Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(h['symbol'] ?? 'Unknown', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700)),
               const SizedBox(height: 4),
-              Text('${h['type'] ?? 'BUY'} · Qty: ${h['quantity'] ?? 0} · ₹${(h['price'] ?? 0).toStringAsFixed(2)}', style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+              Text('${h['type'] ?? 'BUY'} · Qty: ${h['quantity'] ?? 0} · ₹${(h['price'] ?? 0).toStringAsFixed(2)}', style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
             ])),
             Text('${isProfit ? '+' : ''}₹${profit.toStringAsFixed(2)}', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: isProfit ? AppTheme.green : AppTheme.red)),
           ])),
@@ -355,7 +355,7 @@ class _AutoInvestScreenState extends State<AutoInvestScreen> with SingleTickerPr
   Widget _buildPlanTab(AutoInvestProvider ai) {
     final plan = ai.plan;
     if (plan == null) return Center(child: Column(mainAxisSize: MainAxisSize.min, children: [
-      const Text('📋 No plan yet', style: TextStyle(color: AppTheme.textSecondary, fontSize: 16)),
+      Text('📋 No plan yet', style: TextStyle(color: AppTheme.textSecondary, fontSize: 16)),
       const SizedBox(height: 16),
       ClayButton(gradient: AppTheme.accentGradient, onPressed: _showCreatePlan, child: const Text('➕ Create Plan', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700))),
     ]));
@@ -400,7 +400,7 @@ class _AutoInvestScreenState extends State<AutoInvestScreen> with SingleTickerPr
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        Text(label, style: const TextStyle(fontSize: 13, color: AppTheme.textSecondary)),
+        Text(label, style: TextStyle(fontSize: 13, color: AppTheme.textSecondary)),
         Text(value, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700)),
       ]),
     );

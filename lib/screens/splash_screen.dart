@@ -89,7 +89,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                 child: Column(children: [
                   Text('Pugazh Stocks', style: TextStyle(fontSize: 32, fontWeight: FontWeight.w900, color: AppTheme.textPrimary, letterSpacing: -0.5, shadows: [Shadow(color: AppTheme.accent.withValues(alpha: 0.2), blurRadius: 20)])),
                   const SizedBox(height: 8),
-                  const Text('AI-Powered Paper Trading', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: AppTheme.textSecondary, letterSpacing: 1)),
+                  Text('AI-Powered Paper Trading', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: AppTheme.textSecondary, letterSpacing: 1)),
                 ]),
               ),
             );

@@ -38,7 +38,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
             child: Row(children: [
               ClayIconButton(icon: Icons.menu, onTap: () => Scaffold.of(context).openDrawer()),
               const SizedBox(width: 14),
-              const Expanded(child: Text('Portfolio', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
+              Expanded(child: Text('Portfolio', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
             ]),
           )),
 
@@ -77,8 +77,8 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                 ),
                 const SizedBox(width: 10),
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  const Text('Cash Balance', style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
-                  Text(_fmt.format(auth.balance), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+                  Text('Cash Balance', style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+                  Text(_fmt.format(auth.balance), style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
                 ]),
               ]))),
               const SizedBox(width: 10),
@@ -90,8 +90,8 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                 ),
                 const SizedBox(width: 10),
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  const Text('Total Value', style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
-                  Text(_fmt.format(auth.balance + p.totalCurrent), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+                  Text('Total Value', style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+                  Text(_fmt.format(auth.balance + p.totalCurrent), style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
                 ]),
               ]))),
             ]),
@@ -102,7 +102,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
             child: ClayCard(depth: 0.4, padding: const EdgeInsets.all(14), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Row(children: [
-                const Text('🤖 AI Portfolio Insight', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: AppTheme.accentLight)),
+                Text('🤖 AI Portfolio Insight', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: AppTheme.accentLight)),
                 const Spacer(),
                 GestureDetector(
                   onTap: ai.isPortfolioAnalyzing ? null : () => context.read<AiProvider>().getPortfolioAnalysis(),
@@ -110,8 +110,8 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(color: AppTheme.accent.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(8)),
                     child: ai.isPortfolioAnalyzing
-                      ? const SizedBox(width: 14, height: 14, child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.accent))
-                      : const Text('Analyze', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.accent)),
+                      ? SizedBox(width: 14, height: 14, child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.accent))
+                      : Text('Analyze', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.accent)),
                   ),
                 ),
               ]),
@@ -119,7 +119,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                 const SizedBox(height: 8),
                 Text(
                   ai.portfolioAnalysis!['analysis'] ?? ai.portfolioAnalysis!['suggestions']?.toString() ?? 'Tap Analyze for AI insights',
-                  style: const TextStyle(fontSize: 12, color: AppTheme.textPrimary, height: 1.4),
+                  style: TextStyle(fontSize: 12, color: AppTheme.textPrimary, height: 1.4),
                   maxLines: 4, overflow: TextOverflow.ellipsis,
                 ),
                 if (ai.portfolioAnalysis!['suggestions'] is List) ...[
@@ -128,7 +128,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                     padding: const EdgeInsets.only(bottom: 3),
                     child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       const Text('💡 ', style: TextStyle(fontSize: 10)),
-                      Expanded(child: Text(s.toString(), style: const TextStyle(fontSize: 11, color: AppTheme.accentLight, height: 1.3), maxLines: 2, overflow: TextOverflow.ellipsis)),
+                      Expanded(child: Text(s.toString(), style: TextStyle(fontSize: 11, color: AppTheme.accentLight, height: 1.3), maxLines: 2, overflow: TextOverflow.ellipsis)),
                     ]),
                   )),
                 ],
@@ -144,9 +144,9 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
           SliverToBoxAdapter(child: Padding(
             padding: const EdgeInsets.fromLTRB(20, 24, 20, 12),
             child: Row(children: [
-              const Icon(Icons.inventory_2, size: 18, color: AppTheme.accent),
+              Icon(Icons.inventory_2, size: 18, color: AppTheme.accent),
               const SizedBox(width: 8),
-              Text('Holdings (${p.holdings.length})', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+              Text('Holdings (${p.holdings.length})', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
             ]),
           )),
 
@@ -156,11 +156,11 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
             SliverToBoxAdapter(child: Padding(
               padding: const EdgeInsets.all(40),
               child: Column(children: [
-                const Icon(Icons.inventory_2_outlined, size: 60, color: AppTheme.textLight),
+                Icon(Icons.inventory_2_outlined, size: 60, color: AppTheme.textLight),
                 const SizedBox(height: 12),
-                const Text('No holdings yet', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.textSecondary)),
+                Text('No holdings yet', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.textSecondary)),
                 const SizedBox(height: 8),
-                const Text('Start trading to build your portfolio', style: TextStyle(fontSize: 13, color: AppTheme.textLight)),
+                Text('Start trading to build your portfolio', style: TextStyle(fontSize: 13, color: AppTheme.textLight)),
               ]),
             ))
           else
@@ -190,8 +190,8 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                         ),
                         const SizedBox(width: 12),
                         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                          Text(h['symbol'] ?? '', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
-                          Text('$qty shares · Avg ${_fmt.format(avg)}', style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+                          Text(h['symbol'] ?? '', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+                          Text('$qty shares · Avg ${_fmt.format(avg)}', style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
                         ])),
                         Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
                           Text(_fmt.format(totalCurrent), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700)),
@@ -215,9 +215,9 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
 
   Widget _summaryItem(String label, String value) {
     return Column(children: [
-      Text(label, style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary, fontWeight: FontWeight.w500)),
+      Text(label, style: TextStyle(fontSize: 12, color: AppTheme.textSecondary, fontWeight: FontWeight.w500)),
       const SizedBox(height: 4),
-      Text(value, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+      Text(value, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
     ]);
   }
 }

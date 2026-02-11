@@ -24,11 +24,11 @@ class ProfileScreen extends StatelessWidget {
               child: Container(
                 width: 40, height: 40,
                 decoration: BoxDecoration(color: AppTheme.surfaceColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: AppTheme.border)),
-                child: const Center(child: Text('☰', style: TextStyle(fontSize: 18, color: AppTheme.textPrimary))),
+                child: Center(child: Text('☰', style: TextStyle(fontSize: 18, color: AppTheme.textPrimary))),
               ),
             ),
             const SizedBox(width: 14),
-            const Expanded(child: Text('👤 Profile', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
+            Expanded(child: Text('👤 Profile', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
           ]),
           const SizedBox(height: 24),
 
@@ -39,16 +39,16 @@ class ProfileScreen extends StatelessWidget {
             child: Center(child: Text(auth.displayName.isNotEmpty ? '${auth.displayName[0].toUpperCase()}' : '👤', style: const TextStyle(color: Colors.white, fontSize: 36, fontWeight: FontWeight.w900))),
           ),
           const SizedBox(height: 16),
-          Text(auth.displayName, style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+          Text(auth.displayName, style: TextStyle(fontSize: 22, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
           const SizedBox(height: 4),
-          Text(auth.user?['email'] ?? '', style: const TextStyle(fontSize: 14, color: AppTheme.textSecondary)),
+          Text(auth.user?['email'] ?? '', style: TextStyle(fontSize: 14, color: AppTheme.textSecondary)),
           const SizedBox(height: 24),
 
           // Theme Selector
           ClayCard(padding: const EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Text('🎨 Color Theme', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+            Text('🎨 Color Theme', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
             const SizedBox(height: 4),
-            Text('Current: ${theme.themeEmoji} ${theme.themeName}', style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
+            Text('Current: ${theme.themeEmoji} ${theme.themeName}', style: TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
             const SizedBox(height: 12),
             Wrap(spacing: 10, runSpacing: 10, children: ThemeProvider.themes.entries.map((entry) {
               final t = entry.value;
@@ -120,7 +120,7 @@ class ProfileScreen extends StatelessWidget {
             ]),
           ),
           const SizedBox(height: 12),
-          const Text('Pugazh Stocks Simulator v2.0 ✨', style: TextStyle(fontSize: 12, color: AppTheme.textLight)),
+          Text('Pugazh Stocks Simulator v2.0 ✨', style: TextStyle(fontSize: 12, color: AppTheme.textLight)),
           const SizedBox(height: 40),
         ]),
       ),
@@ -139,8 +139,8 @@ class ProfileScreen extends StatelessWidget {
           child: Row(children: [
             Text(emoji, style: const TextStyle(fontSize: 18)),
             const SizedBox(width: 14),
-            Expanded(child: Text(label, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: AppTheme.textPrimary))),
-            const Text('›', style: TextStyle(fontSize: 20, color: AppTheme.textLight)),
+            Expanded(child: Text(label, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: AppTheme.textPrimary))),
+            Text('›', style: TextStyle(fontSize: 20, color: AppTheme.textLight)),
           ]),
         ),
       ),

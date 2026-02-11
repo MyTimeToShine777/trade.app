@@ -46,7 +46,7 @@ class _AiScreenState extends State<AiScreen>
           ClayIconButton(
               icon: Icons.menu, onTap: () => Scaffold.of(context).openDrawer()),
           const SizedBox(width: 14),
-          const Expanded(
+          Expanded(
               child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -130,7 +130,7 @@ class _AiScreenState extends State<AiScreen>
                   child: const Icon(Icons.smart_toy, color: Colors.white, size: 36),
                 ),
                 const SizedBox(height: 16),
-                const Text('TradeGuru AI',
+                Text('TradeGuru AI',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
                 const SizedBox(height: 8),
                 const Padding(
@@ -201,7 +201,7 @@ class _AiScreenState extends State<AiScreen>
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
           decoration: BoxDecoration(color: AppTheme.cardColor, borderRadius: BorderRadius.circular(16), border: Border.all(color: AppTheme.border, width: 1)),
-          child: Text(text, style: const TextStyle(fontSize: 12, color: AppTheme.accent, fontWeight: FontWeight.w600)),
+          child: Text(text, style: TextStyle(fontSize: 12, color: AppTheme.accent, fontWeight: FontWeight.w600)),
         ),
       );
 
@@ -247,7 +247,7 @@ class _AiScreenState extends State<AiScreen>
           Container(
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(color: AppTheme.cardColor, borderRadius: BorderRadius.circular(18), border: Border.all(color: AppTheme.border, width: 1)),
-            child: const Row(mainAxisSize: MainAxisSize.min, children: [
+            child: Row(mainAxisSize: MainAxisSize.min, children: [
               SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.accent)),
               SizedBox(width: 8),
               Text('Thinking...', style: TextStyle(fontSize: 13, color: AppTheme.textSecondary))
@@ -318,7 +318,7 @@ class _AiScreenState extends State<AiScreen>
                 decoration: BoxDecoration(gradient: AppTheme.cyanGradient, borderRadius: BorderRadius.circular(12)),
                 child: const Icon(Icons.analytics, color: Colors.white, size: 18)),
             const SizedBox(width: 10),
-            const Expanded(child: Text('AI Research', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary))),
+            Expanded(child: Text('AI Research', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary))),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(color: c.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(12), border: Border.all(color: c.withValues(alpha: 0.25))),
@@ -335,26 +335,26 @@ class _AiScreenState extends State<AiScreen>
           ]),
           if (targetTimeline.isNotEmpty) ...[
             const SizedBox(height: 8),
-            Text('Timeline: $targetTimeline', style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+            Text('Timeline: $targetTimeline', style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
           ],
           if (summary.isNotEmpty) ...[
             const SizedBox(height: 14),
             Container(
               width: double.infinity, padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(color: AppTheme.surfaceColor, borderRadius: BorderRadius.circular(12)),
-              child: Text(summary, style: const TextStyle(fontSize: 14, color: AppTheme.textPrimary, height: 1.5)),
+              child: Text(summary, style: TextStyle(fontSize: 14, color: AppTheme.textPrimary, height: 1.5)),
             ),
           ],
           if (keyInsight.isNotEmpty) ...[
             const SizedBox(height: 10),
             Row(children: [
               const Text('💡 ', style: TextStyle(fontSize: 14)),
-              Expanded(child: Text(keyInsight, style: const TextStyle(fontSize: 13, color: AppTheme.accentLight, fontWeight: FontWeight.w600, fontStyle: FontStyle.italic))),
+              Expanded(child: Text(keyInsight, style: TextStyle(fontSize: 13, color: AppTheme.accentLight, fontWeight: FontWeight.w600, fontStyle: FontStyle.italic))),
             ]),
           ],
           if (asOf.isNotEmpty) ...[
             const SizedBox(height: 12),
-            Text('As of: $asOf', style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+            Text('As of: $asOf', style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
           ]
         ]),
       ),
@@ -367,7 +367,7 @@ class _AiScreenState extends State<AiScreen>
               const SizedBox(height: 8),
               ...strengths.take(4).map((s) => Padding(padding: const EdgeInsets.only(bottom: 4), child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 const Text('✅ ', style: TextStyle(fontSize: 11)),
-                Expanded(child: Text(s.toString(), style: const TextStyle(fontSize: 12, color: AppTheme.textPrimary, height: 1.3))),
+                Expanded(child: Text(s.toString(), style: TextStyle(fontSize: 12, color: AppTheme.textPrimary, height: 1.3))),
               ]))),
             ]))),
           if (strengths.isNotEmpty && weaknesses.isNotEmpty) const SizedBox(width: 10),
@@ -377,7 +377,7 @@ class _AiScreenState extends State<AiScreen>
               const SizedBox(height: 8),
               ...weaknesses.take(4).map((w) => Padding(padding: const EdgeInsets.only(bottom: 4), child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 const Text('❌ ', style: TextStyle(fontSize: 11)),
-                Expanded(child: Text(w.toString(), style: const TextStyle(fontSize: 12, color: AppTheme.textPrimary, height: 1.3))),
+                Expanded(child: Text(w.toString(), style: TextStyle(fontSize: 12, color: AppTheme.textPrimary, height: 1.3))),
               ]))),
             ]))),
         ]),
@@ -385,11 +385,11 @@ class _AiScreenState extends State<AiScreen>
       if (why.isNotEmpty) ...[
         const SizedBox(height: 12),
         ClayCard(padding: const EdgeInsets.all(14), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Text('🎯 Why this call', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+          Text('🎯 Why this call', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
           const SizedBox(height: 8),
           ...why.take(5).map((t) => Padding(padding: const EdgeInsets.only(bottom: 6), child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const Text('• ', style: TextStyle(fontSize: 14, color: AppTheme.accent, fontWeight: FontWeight.w900)),
-            Expanded(child: Text(t.toString(), style: const TextStyle(fontSize: 13, color: AppTheme.textPrimary, height: 1.35))),
+            Text('• ', style: TextStyle(fontSize: 14, color: AppTheme.accent, fontWeight: FontWeight.w900)),
+            Expanded(child: Text(t.toString(), style: TextStyle(fontSize: 13, color: AppTheme.textPrimary, height: 1.35))),
           ]))),
         ])),
       ],
@@ -400,7 +400,7 @@ class _AiScreenState extends State<AiScreen>
           const SizedBox(height: 8),
           ...risks.take(4).map((t) => Padding(padding: const EdgeInsets.only(bottom: 6), child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const Text('⚡ ', style: TextStyle(fontSize: 12)),
-            Expanded(child: Text(t.toString(), style: const TextStyle(fontSize: 13, color: AppTheme.textPrimary, height: 1.35))),
+            Expanded(child: Text(t.toString(), style: TextStyle(fontSize: 13, color: AppTheme.textPrimary, height: 1.35))),
           ]))),
         ])),
       ],
@@ -415,7 +415,7 @@ class _AiScreenState extends State<AiScreen>
       child: Column(children: [
         Text(value, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800, color: c), overflow: TextOverflow.ellipsis),
         const SizedBox(height: 2),
-        Text(label, style: const TextStyle(fontSize: 9, color: AppTheme.textSecondary)),
+        Text(label, style: TextStyle(fontSize: 9, color: AppTheme.textSecondary)),
       ]),
     ));
   }
@@ -475,16 +475,16 @@ class _AiScreenState extends State<AiScreen>
           Row(children: [
             Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(gradient: AppTheme.blueGradient, borderRadius: BorderRadius.circular(12)), child: const Icon(Icons.compare_arrows, color: Colors.white, size: 18)),
             const SizedBox(width: 10),
-            const Text('Metrics', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+            Text('Metrics', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
           ]),
           const SizedBox(height: 12),
           // Column headers
           Row(children: [
-            const Expanded(flex: 2, child: Text('Metric', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.textSecondary))),
-            Expanded(child: Text(_compare1Ctrl.text.trim().toUpperCase(), style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.accent), textAlign: TextAlign.center)),
+            Expanded(flex: 2, child: Text('Metric', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.textSecondary))),
+            Expanded(child: Text(_compare1Ctrl.text.trim().toUpperCase(), style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.accent), textAlign: TextAlign.center)),
             Expanded(child: Text(_compare2Ctrl.text.trim().toUpperCase(), style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.blue), textAlign: TextAlign.center)),
           ]),
-          const Divider(height: 16, color: AppTheme.border),
+          Divider(height: 16, color: AppTheme.border),
           ...metrics.entries.map((e) {
             final mData = e.value is Map ? e.value as Map : {};
             final v1 = mData['stock1']?.toString() ?? '-';
@@ -495,7 +495,7 @@ class _AiScreenState extends State<AiScreen>
             final isS1 = mWinner == s1;
             final isS2 = mWinner == s2;
             return Padding(padding: const EdgeInsets.symmetric(vertical: 4), child: Row(children: [
-              Expanded(flex: 2, child: Text(e.key[0].toUpperCase() + e.key.substring(1), style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppTheme.textPrimary))),
+              Expanded(flex: 2, child: Text(e.key[0].toUpperCase() + e.key.substring(1), style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppTheme.textPrimary))),
               Expanded(child: Text('${isS1 ? "✅ " : ""}$v1', style: TextStyle(fontSize: 11, fontWeight: isS1 ? FontWeight.w700 : FontWeight.w500, color: isS1 ? AppTheme.green : AppTheme.textSecondary), textAlign: TextAlign.center)),
               Expanded(child: Text('${isS2 ? "✅ " : ""}$v2', style: TextStyle(fontSize: 11, fontWeight: isS2 ? FontWeight.w700 : FontWeight.w500, color: isS2 ? AppTheme.green : AppTheme.textSecondary), textAlign: TextAlign.center)),
             ]));
@@ -505,9 +505,9 @@ class _AiScreenState extends State<AiScreen>
       if (verdict.isNotEmpty) ...[
         const SizedBox(height: 12),
         ClayCard(padding: const EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Text('⚖️ Verdict', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+          Text('⚖️ Verdict', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
           const SizedBox(height: 8),
-          Text(verdict, style: const TextStyle(fontSize: 13, color: AppTheme.textPrimary, height: 1.5)),
+          Text(verdict, style: TextStyle(fontSize: 13, color: AppTheme.textPrimary, height: 1.5)),
         ])),
       ],
       if (comparison.isNotEmpty && metrics.isEmpty) ...[
@@ -516,10 +516,10 @@ class _AiScreenState extends State<AiScreen>
           Row(children: [
             Container(padding: const EdgeInsets.all(8), decoration: BoxDecoration(gradient: AppTheme.blueGradient, borderRadius: BorderRadius.circular(12)), child: const Icon(Icons.compare_arrows, color: Colors.white, size: 18)),
             const SizedBox(width: 10),
-            const Text('Comparison', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary))
+            Text('Comparison', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary))
           ]),
           const SizedBox(height: 14),
-          Text(comparison, style: const TextStyle(fontSize: 14, color: AppTheme.textPrimary, height: 1.5)),
+          Text(comparison, style: TextStyle(fontSize: 14, color: AppTheme.textPrimary, height: 1.5)),
         ])),
       ],
       const SizedBox(height: 20),
@@ -547,9 +547,9 @@ class _AiScreenState extends State<AiScreen>
               const SizedBox(height: 40),
               Container(width: 70, height: 70, decoration: BoxDecoration(gradient: AppTheme.pinkGradient, borderRadius: BorderRadius.circular(24)), child: const Icon(Icons.mood, color: Colors.white, size: 32)),
               const SizedBox(height: 16),
-              const Text('Market Sentiment', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+              Text('Market Sentiment', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
               const SizedBox(height: 8),
-              const Text('Get AI-powered market mood analysis\nwith sector trends and advice', textAlign: TextAlign.center, style: TextStyle(fontSize: 13, color: AppTheme.textSecondary)),
+              Text('Get AI-powered market mood analysis\nwith sector trends and advice', textAlign: TextAlign.center, style: TextStyle(fontSize: 13, color: AppTheme.textSecondary)),
             ]),
           if (ai.sentiment != null) _sentimentCard(ai.sentiment!),
         ]));
@@ -591,15 +591,15 @@ class _AiScreenState extends State<AiScreen>
       if (summary.isNotEmpty) ...[
         const SizedBox(height: 12),
         ClayCard(padding: const EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Text('📋 Summary', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+          Text('📋 Summary', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
           const SizedBox(height: 8),
-          Text(summary, style: const TextStyle(fontSize: 13, color: AppTheme.textPrimary, height: 1.5)),
+          Text(summary, style: TextStyle(fontSize: 13, color: AppTheme.textPrimary, height: 1.5)),
         ])),
       ],
       if (sectors.isNotEmpty) ...[
         const SizedBox(height: 12),
         ClayCard(padding: const EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Text('📈 Sector Trends', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+          Text('📈 Sector Trends', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
           const SizedBox(height: 10),
           ...sectors.map((s) {
             final sectorName = (s['sector'] ?? s['name'] ?? '').toString();
@@ -608,7 +608,7 @@ class _AiScreenState extends State<AiScreen>
             return Padding(padding: const EdgeInsets.only(bottom: 8), child: Row(children: [
               Container(width: 8, height: 8, decoration: BoxDecoration(color: isBull ? AppTheme.green : AppTheme.red, shape: BoxShape.circle)),
               const SizedBox(width: 10),
-              Expanded(child: Text(sectorName, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppTheme.textPrimary))),
+              Expanded(child: Text(sectorName, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppTheme.textPrimary))),
               Text(trend, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: isBull ? AppTheme.green : AppTheme.red)),
             ]));
           }),
@@ -617,9 +617,9 @@ class _AiScreenState extends State<AiScreen>
       if (advice.isNotEmpty) ...[
         const SizedBox(height: 12),
         ClayCard(padding: const EdgeInsets.all(16), child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Text('💡 AI Advice', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.accentLight)),
+          Text('💡 AI Advice', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.accentLight)),
           const SizedBox(height: 8),
-          Text(advice, style: const TextStyle(fontSize: 13, color: AppTheme.textPrimary, height: 1.5)),
+          Text(advice, style: TextStyle(fontSize: 13, color: AppTheme.textPrimary, height: 1.5)),
         ])),
       ],
       const SizedBox(height: 20),

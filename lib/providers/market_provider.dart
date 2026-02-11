@@ -60,7 +60,10 @@ class MarketProvider extends ChangeNotifier {
       final data = await ApiService.get('/market/indices');
       _indices = List<Map<String, dynamic>>.from(data['indices'] ?? []);
       notifyListeners();
-    } catch (_) {}
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+    }
   }
 
   Future<void> loadGainersLosers() async {
@@ -69,7 +72,10 @@ class MarketProvider extends ChangeNotifier {
       _gainers = List<Map<String, dynamic>>.from(data['gainers'] ?? []);
       _losers = List<Map<String, dynamic>>.from(data['losers'] ?? []);
       notifyListeners();
-    } catch (_) {}
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+    }
   }
 
   Future<void> searchStocks(String query) async {
@@ -150,7 +156,10 @@ class MarketProvider extends ChangeNotifier {
       final data = await ApiService.get('/fundamental/score/$symbol');
       _fundamentalScore = data;
       notifyListeners();
-    } catch (_) {}
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+    }
   }
 
   // ═══════ CHART DATA — /market/chart/:symbol ═══════

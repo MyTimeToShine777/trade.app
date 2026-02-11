@@ -61,7 +61,10 @@ class PortfolioProvider extends ChangeNotifier {
       final data = await ApiService.get('/trading/orders');
       _orders = List<Map<String, dynamic>>.from(data['orders'] ?? []);
       notifyListeners();
-    } catch (_) {}
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+    }
   }
 
   Future<void> loadTransactions() async {
@@ -70,7 +73,10 @@ class PortfolioProvider extends ChangeNotifier {
       _transactions =
           List<Map<String, dynamic>>.from(data['transactions'] ?? []);
       notifyListeners();
-    } catch (_) {}
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+    }
   }
 
   Future<Map<String, dynamic>> placeOrder({
@@ -112,7 +118,7 @@ class PortfolioProvider extends ChangeNotifier {
 
       return data;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -122,7 +128,10 @@ class PortfolioProvider extends ChangeNotifier {
       final data = await ApiService.get('/watchlist');
       _watchlist = List<Map<String, dynamic>>.from(data['watchlist'] ?? []);
       notifyListeners();
-    } catch (_) {}
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+    }
   }
 
   Future<void> addToWatchlist(String symbol, String name) async {
@@ -130,7 +139,7 @@ class PortfolioProvider extends ChangeNotifier {
       await ApiService.post('/watchlist', {'symbol': symbol, 'name': name});
       await loadWatchlist();
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -140,7 +149,7 @@ class PortfolioProvider extends ChangeNotifier {
       _watchlist.removeWhere((item) => item['symbol'] == symbol);
       notifyListeners();
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 

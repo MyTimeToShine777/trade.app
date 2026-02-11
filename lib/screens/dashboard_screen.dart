@@ -55,18 +55,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 child: Container(
                   width: 40, height: 40,
                   decoration: BoxDecoration(color: AppTheme.surfaceColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: AppTheme.border)),
-                  child: const Center(child: Text('☰', style: TextStyle(fontSize: 18, color: AppTheme.textPrimary))),
+                  child: Center(child: Text('☰', style: TextStyle(fontSize: 18, color: AppTheme.textPrimary))),
                 ),
               ),
               const SizedBox(width: 14),
               Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text('Good ${_greeting()} 👋', style: const TextStyle(fontSize: 13, color: AppTheme.textSecondary)),
-                Text(auth.displayName, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+                Text('Good ${_greeting()} 👋', style: TextStyle(fontSize: 13, color: AppTheme.textSecondary)),
+                Text(auth.displayName, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
               ])),
-              Container(
-                width: 40, height: 40,
-                decoration: BoxDecoration(color: AppTheme.surfaceColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: AppTheme.border)),
-                child: const Center(child: Text('🔔', style: TextStyle(fontSize: 18))),
+              GestureDetector(
+                onTap: () => Navigator.pushNamed(context, '/orders'),
+                child: Container(
+                  width: 40, height: 40,
+                  decoration: BoxDecoration(color: AppTheme.surfaceColor, borderRadius: BorderRadius.circular(12), border: Border.all(color: AppTheme.border)),
+                  child: const Center(child: Text('🔔', style: TextStyle(fontSize: 18))),
+                ),
               ),
             ]),
           )),
@@ -120,7 +123,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
               const SizedBox(width: 12),
               Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                const Text("Today's P&L", style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+                Text("Today's P&L", style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
                 Text('${portfolio.totalPnl >= 0 ? '+' : ''}${_fmt.format(portfolio.totalPnl)} (${portfolio.totalPnlPercent.toStringAsFixed(2)}%)',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: portfolio.totalPnl >= 0 ? AppTheme.green : AppTheme.red)),
               ])),
@@ -231,7 +234,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           child: Center(child: Text(emoji, style: const TextStyle(fontSize: 22))),
         ),
         const SizedBox(height: 8),
-        Text(label, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppTheme.textSecondary)),
+        Text(label, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppTheme.textSecondary)),
       ]),
     ));
   }
@@ -244,9 +247,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         Container(width: 40, height: 40, decoration: BoxDecoration(gradient: grad, borderRadius: BorderRadius.circular(12)), child: Center(child: Text(emoji, style: const TextStyle(fontSize: 18)))),
         const SizedBox(width: 12),
         Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(label, style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
-          Text(value, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
-          if (subtitle != null) Text(subtitle, style: const TextStyle(fontSize: 10, color: AppTheme.textSecondary)),
+          Text(label, style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+          Text(value, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+          if (subtitle != null) Text(subtitle, style: TextStyle(fontSize: 10, color: AppTheme.textSecondary)),
         ]),
       ]),
     );
@@ -255,7 +258,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _sectionHeader(String title, IconData? icon, Color iconColor) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 24, 20, 12),
-      child: Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+      child: Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
     );
   }
 
@@ -272,9 +275,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           border: Border.all(color: AppTheme.border, width: 1),
         ),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
-          Text(stock['symbol'] ?? '', style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: AppTheme.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis),
+          Text(stock['symbol'] ?? '', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w800, color: AppTheme.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis),
           const Spacer(),
-          Text(_fmt.format(price), style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
+          Text(_fmt.format(price), style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
           const SizedBox(height: 4),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
@@ -301,11 +304,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
         onTap: () => Navigator.pushNamed(context, '/stock-detail', arguments: h['symbol']),
         child: Row(children: [
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(h['symbol'] ?? '', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
-            Text('$qty shares · Avg ${_fmt.format(avg)}', style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+            Text(h['symbol'] ?? '', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+            Text('$qty shares · Avg ${_fmt.format(avg)}', style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
           ])),
           Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-            Text(_fmt.format(cur * qty), style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
+            Text(_fmt.format(cur * qty), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
             Text('${isPos ? '+' : ''}${_fmt.format(pnl)} (${pct.toStringAsFixed(1)}%)', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: isPos ? AppTheme.green : AppTheme.red)),
           ]),
         ]),
@@ -324,11 +327,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
         onTap: () => Navigator.pushNamed(context, '/stock-detail', arguments: w['symbol']),
         child: Row(children: [
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(w['symbol'] ?? '', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
-            Text(w['name'] ?? '', style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis),
+            Text(w['symbol'] ?? '', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+            Text(w['name'] ?? '', style: TextStyle(fontSize: 11, color: AppTheme.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis),
           ])),
           Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-            Text(price > 0 ? _fmt.format(price) : '--', style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
+            Text(price > 0 ? _fmt.format(price) : '--', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
             if (change != 0)
               Text('${isPos ? '+' : ''}${change.toStringAsFixed(2)}%', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: isPos ? AppTheme.green : AppTheme.red)),
           ]),
@@ -354,16 +357,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: const Center(child: Text('🧠', style: TextStyle(fontSize: 16))),
             ),
             const SizedBox(width: 10),
-            const Expanded(child: Text('AI Market Insight', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary))),
+            Expanded(child: Text('AI Market Insight', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary))),
             if (ai.isSentimentLoading)
-              const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.accent))
+              SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.accent))
             else
               GestureDetector(
                 onTap: () => ai.getSentiment(),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(color: AppTheme.accent.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(8)),
-                  child: Text(sentiment != null ? '↻ Refresh' : 'Get Insight', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.accent)),
+                  child: Text(sentiment != null ? '↻ Refresh' : 'Get Insight', style: TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppTheme.accent)),
                 ),
               ),
           ]),
@@ -375,17 +378,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const SizedBox(width: 8),
               ConstrainedBox(
                 constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.35),
-                child: Text((sentiment['sentiment'] ?? 'Unknown').toString().toUpperCase(), style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
+                child: Text((sentiment['sentiment'] ?? 'Unknown').toString().toUpperCase(), style: TextStyle(fontSize: 14, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
               ),
               const Spacer(),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                 decoration: BoxDecoration(color: AppTheme.accent.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(10)),
-                child: Text('Score: ${sentiment['score'] ?? '-'}', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.accent)),
+                child: Text('Score: ${sentiment['score'] ?? '-'}', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.accent)),
               ),
             ]),
             const SizedBox(height: 10),
-            Text(sentiment['summary'] ?? '', style: const TextStyle(fontSize: 12, color: AppTheme.textSecondary, height: 1.5), maxLines: 3, overflow: TextOverflow.ellipsis),
+            Text(sentiment['summary'] ?? '', style: TextStyle(fontSize: 12, color: AppTheme.textSecondary, height: 1.5), maxLines: 3, overflow: TextOverflow.ellipsis),
             if (sentiment['advice'] != null) ...[
               const SizedBox(height: 8),
               Container(
@@ -394,7 +397,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 decoration: BoxDecoration(color: AppTheme.accent.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(10)),
                 child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   const Text('💡 ', style: TextStyle(fontSize: 12)),
-                  Expanded(child: Text(sentiment['advice'], style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppTheme.textPrimary, height: 1.4), maxLines: 2, overflow: TextOverflow.ellipsis)),
+                  Expanded(child: Text(sentiment['advice'], style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppTheme.textPrimary, height: 1.4), maxLines: 2, overflow: TextOverflow.ellipsis)),
                 ]),
               ),
             ],

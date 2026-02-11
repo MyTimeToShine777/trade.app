@@ -59,7 +59,7 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
           child: Row(children: [
             ClayIconButton(icon: Icons.arrow_back, onTap: () => Navigator.pop(context)),
             const SizedBox(width: 14),
-            const Expanded(child: Text('Mutual Funds', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
+            Expanded(child: Text('Mutual Funds', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
           ]),
         )),
 
@@ -87,7 +87,7 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
               child: ClayCard(depth: 0.5, padding: const EdgeInsets.all(16), borderRadius: 18, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(name, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
+                Text(name, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
                 const SizedBox(height: 8),
                 Row(children: [
                   _metricBadge('1Y', '+${returns1y.toStringAsFixed(1)}%', AppTheme.green),
@@ -96,13 +96,13 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
                   const SizedBox(width: 8),
                   _metricBadge(risk, '', riskColor),
                   const Spacer(),
-                  Text('Min ₹$minSIP/mo', style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+                  Text('Min ₹$minSIP/mo', style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
                 ]),
                 const SizedBox(height: 12),
                 Row(children: [
                   Expanded(child: ClayButton(isSmall: true, gradient: AppTheme.accentGradient, onPressed: () => Navigator.pushNamed(context, '/sip'), child: const Text('Start SIP', style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700)))),
                   const SizedBox(width: 8),
-                  Expanded(child: ClayButton(isSmall: true, color: AppTheme.cardColor, onPressed: () => Navigator.pushNamed(context, '/sip'), child: const Text('Invest', style: TextStyle(color: AppTheme.accent, fontSize: 12, fontWeight: FontWeight.w700)))),
+                  Expanded(child: ClayButton(isSmall: true, color: AppTheme.cardColor, onPressed: () => Navigator.pushNamed(context, '/sip'), child: Text('Invest', style: TextStyle(color: AppTheme.accent, fontSize: 12, fontWeight: FontWeight.w700)))),
                 ]),
               ])),
             );

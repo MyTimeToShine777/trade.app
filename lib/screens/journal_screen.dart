@@ -39,7 +39,7 @@ class _JournalScreenState extends State<JournalScreen> {
           child: Row(children: [
             ClayIconButton(icon: Icons.arrow_back, onTap: () => Navigator.pop(context)),
             const SizedBox(width: 14),
-            const Expanded(child: Text('Trade Journal', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
+            Expanded(child: Text('Trade Journal', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: AppTheme.textPrimary))),
           ]),
         )),
 
@@ -56,11 +56,11 @@ class _JournalScreenState extends State<JournalScreen> {
           const SliverToBoxAdapter(child: Center(child: Padding(padding: EdgeInsets.all(40), child: CircularProgressIndicator(color: AppTheme.accent))))
         else if (_entries.isEmpty)
           SliverToBoxAdapter(child: Padding(padding: const EdgeInsets.all(40), child: Column(mainAxisSize: MainAxisSize.min, children: [
-            const Icon(Icons.menu_book_outlined, size: 60, color: AppTheme.textLight),
+            Icon(Icons.menu_book_outlined, size: 60, color: AppTheme.textLight),
             const SizedBox(height: 12),
-            const Text('No journal entries', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.textSecondary)),
+            Text('No journal entries', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.textSecondary)),
             const SizedBox(height: 6),
-            const Text('Tap + to add your first entry', style: TextStyle(fontSize: 13, color: AppTheme.textLight)),
+            Text('Tap + to add your first entry', style: TextStyle(fontSize: 13, color: AppTheme.textLight)),
           ])))
         else SliverList(delegate: SliverChildBuilderDelegate(
           (_, i) {
@@ -90,9 +90,9 @@ class _JournalScreenState extends State<JournalScreen> {
                     Text(emotionIcon, style: const TextStyle(fontSize: 20)),
                     const SizedBox(width: 8),
                     Expanded(child: Text(e['title'] ?? e['symbol'] ?? 'Entry', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700))),
-                    Text(e['date'] ?? '', style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+                    Text(e['date'] ?? '', style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
                   ]),
-                  if (e['notes'] != null) ...[const SizedBox(height: 8), Text(e['notes']!, style: const TextStyle(fontSize: 13, color: AppTheme.textSecondary, height: 1.4), maxLines: 3, overflow: TextOverflow.ellipsis)],
+                  if (e['notes'] != null) ...[const SizedBox(height: 8), Text(e['notes']!, style: TextStyle(fontSize: 13, color: AppTheme.textSecondary, height: 1.4), maxLines: 3, overflow: TextOverflow.ellipsis)],
                   if (e['strategy'] != null) ...[const SizedBox(height: 6), ClayChip(label: e['strategy']!, icon: Icons.psychology)],
                 ])),
               ),
@@ -163,8 +163,8 @@ class _JournalScreenState extends State<JournalScreen> {
       context: context,
       builder: (ctx) => AlertDialog(
         backgroundColor: AppTheme.cardColor,
-        title: const Text('Delete Entry?', style: TextStyle(color: AppTheme.textPrimary)),
-        content: const Text('This action cannot be undone.', style: TextStyle(color: AppTheme.textSecondary)),
+        title: Text('Delete Entry?', style: TextStyle(color: AppTheme.textPrimary)),
+        content: Text('This action cannot be undone.', style: TextStyle(color: AppTheme.textSecondary)),
         actions: [
           TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
           TextButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Delete', style: TextStyle(color: Colors.red))),

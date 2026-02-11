@@ -6,6 +6,7 @@ class NotificationService {
   static final FlutterLocalNotificationsPlugin _notifications =
       FlutterLocalNotificationsPlugin();
   static bool _initialized = false;
+  static GlobalKey<NavigatorState>? navigatorKey;
 
   static Future<void> init() async {
     if (_initialized) return;
@@ -27,6 +28,10 @@ class NotificationService {
       settings,
       onDidReceiveNotificationResponse: (NotificationResponse response) {
         debugPrint('[Notification] Tapped: ${response.payload}');
+        final payload = response.payload;
+        if (payload != null && payload.isNotEmpty && navigatorKey?.currentState != null) {
+          navigatorKey!.currentState!.pushNamed('/stock-detail', arguments: payload);
+        }
       },
     );
 
