@@ -192,7 +192,7 @@ class _TradeScreenState extends State<TradeScreen> {
             const SizedBox(height: 20),
             ClayButton(
               gradient: orderType == 'BUY' ? AppTheme.greenGradient : AppTheme.redGradient,
-              onPressed: () async {
+              onPressed: qty < 1 ? null : () async {
                 HapticFeedback.mediumImpact();
                 try {
                   await context.read<PortfolioProvider>().placeOrder(

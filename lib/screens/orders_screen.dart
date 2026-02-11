@@ -57,7 +57,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
         else SliverList(delegate: SliverChildBuilderDelegate(
           (_, i) {
             final o = filtered[i];
-            final type = (o['type'] ?? '').toString().toUpperCase();
+            final type = (o['side'] ?? o['type'] ?? '').toString().toUpperCase();
             final isBuy = type.contains('BUY');
             final status = (o['status'] ?? '').toString().toUpperCase();
             return Padding(

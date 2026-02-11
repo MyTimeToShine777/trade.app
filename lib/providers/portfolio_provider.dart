@@ -85,7 +85,8 @@ class PortfolioProvider extends ChangeNotifier {
       final data = await ApiService.post('/trading/order', {
         'symbol': symbol,
         'name': name,
-        'type': type,
+        'side': type,
+        'orderType': 'MARKET',
         'quantity': quantity,
         'price': price,
         'asset_type': assetType,

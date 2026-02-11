@@ -72,7 +72,7 @@ class _SipScreenState extends State<SipScreen> with SingleTickerProviderStateMix
           const SizedBox(height: 12),
           const Text('No SIP plans', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: AppTheme.textSecondary)),
           const SizedBox(height: 20),
-          Padding(padding: const EdgeInsets.symmetric(horizontal: 60), child: ClayButton(gradient: AppTheme.accentGradient, isSmall: true, onPressed: () {}, child: const Text('Create SIP', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)))),
+          Padding(padding: const EdgeInsets.symmetric(horizontal: 60), child: ClayButton(gradient: AppTheme.accentGradient, isSmall: true, onPressed: () => _showCreateSipDialog(), child: const Text('Create SIP', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)))),
         ]))
       : ListView.builder(
           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -126,5 +126,57 @@ class _SipScreenState extends State<SipScreen> with SingleTickerProviderStateMix
       Text(label, style: TextStyle(fontSize: 14, color: isBold ? AppTheme.textPrimary : AppTheme.textSecondary, fontWeight: isBold ? FontWeight.w700 : FontWeight.w500)),
       Text(value, style: TextStyle(fontSize: isBold ? 18 : 15, fontWeight: isBold ? FontWeight.w900 : FontWeight.w700, color: color ?? AppTheme.textPrimary)),
     ]);
+  }
+
+  void _showCreateSipDialog() {
+    final symbolCtrl = TextEditingController();
+    final amountCtrl = TextEditingController(text: '1000');
+    String frequency = 'monthly';
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: AppTheme.cardColor,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(28))),
+      builder: (ctx) => StatefulBuilder(builder: (ctx, ss) => Padding(
+        padding: EdgeInsets.fromLTRB(24, 16, 24, MediaQuery.of(ctx).viewInsets.bottom + 24),
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Container(width: 40, height: 4, decoration: BoxDecoration(color: AppTheme.surfaceColor, borderRadius: BorderRadius.circular(2))),
+          const SizedBox(height: 20),
+          const Text('📊 New SIP Plan', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900, color: AppTheme.textPrimary)),
+          const SizedBox(height: 20),
+          ClayInput(controller: symbolCtrl, labelText: 'STOCK / FUND SYMBOL', hintText: 'e.g. RELIANCE, SBIN', prefixIcon: Icons.search),
+          const SizedBox(height: 16),
+          ClayInput(controller: amountCtrl, labelText: 'SIP AMOUNT (₹)', hintText: '1000', prefixIcon: Icons.currency_rupee, keyboardType: TextInputType.number),
+          const SizedBox(height: 16),
+          const Align(alignment: Alignment.centerLeft, child: Text('FREQUENCY', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: AppTheme.textSecondary, letterSpacing: 1))),
+          const SizedBox(height: 8),
+          Row(children: [
+            for (final f in ['weekly', 'monthly', 'quarterly']) ...[
+              Expanded(child: ClayChip(label: f[0].toUpperCase() + f.substring(1), isActive: frequency == f, onTap: () => ss(() => frequency = f))),
+              if (f != 'quarterly') const SizedBox(width: 8),
+            ],
+          ]),
+          const SizedBox(height: 20),
+          ClayButton(gradient: AppTheme.accentGradient, onPressed: () async {
+            final symbol = symbolCtrl.text.trim().toUpperCase();
+            final amount = double.tryParse(amountCtrl.text) ?? 0;
+            if (symbol.isEmpty || amount <= 0) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Please enter valid symbol and amount'), backgroundColor: AppTheme.red));
+              return;
+            }
+            final ok = await context.read<SipProvider>().createPlan({
+              'symbol': symbol,
+              'amount': amount,
+              'frequency': frequency,
+            });
+            if (ctx.mounted) Navigator.pop(ctx);
+            if (ok) {
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('✅ SIP plan created!'), backgroundColor: AppTheme.green));
+            }
+          }, child: const Text('🚀 Start SIP', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w700))),
+        ]),
+      )),
+    );
   }
 }

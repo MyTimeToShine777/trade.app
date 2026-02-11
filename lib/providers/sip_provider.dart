@@ -58,7 +58,9 @@ class SipProvider extends ChangeNotifier {
   void calculate({required double amount, required int years, required double returns}) {
     final months = years * 12;
     final r = returns / 12 / 100;
-    final futureValue = amount * ((((1 + r).toDouble()) - 1) / r) * (1 + r);
+    // SIP Future Value formula: P × [((1+r)^n - 1) / r] × (1+r)
+    final compoundFactor = _pow(1 + r, months);
+    final futureValue = amount * ((compoundFactor - 1) / r) * (1 + r);
     final totalInvested = amount * months;
     _calculator = {
       'futureValue': futureValue,
@@ -66,5 +68,13 @@ class SipProvider extends ChangeNotifier {
       'gains': futureValue - totalInvested,
     };
     notifyListeners();
+  }
+
+  double _pow(double base, int exponent) {
+    double result = 1.0;
+    for (int i = 0; i < exponent; i++) {
+      result *= base;
+    }
+    return result;
   }
 }

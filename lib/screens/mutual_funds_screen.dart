@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../config/theme.dart';
 import '../widgets/clay_widgets.dart';
+import '../services/api_service.dart';
 
 class MutualFundsScreen extends StatefulWidget {
   const MutualFundsScreen({super.key});
@@ -10,9 +11,13 @@ class MutualFundsScreen extends StatefulWidget {
 
 class _MutualFundsScreenState extends State<MutualFundsScreen> {
   String _category = 'All';
+  bool _loading = true;
+  List<Map<String, dynamic>> _funds = [];
 
   final _categories = ['All', 'Equity', 'Debt', 'Hybrid', 'Index', 'Tax Saver'];
-  final _funds = [
+
+  // Fallback data used when API is unavailable
+  final _fallback = [
     {'name': 'SBI Bluechip Fund', 'category': 'Equity', 'returns1y': 18.5, 'returns3y': 15.2, 'risk': 'High', 'minSIP': 500},
     {'name': 'HDFC Mid Cap Opportunities', 'category': 'Equity', 'returns1y': 22.3, 'returns3y': 19.8, 'risk': 'Very High', 'minSIP': 500},
     {'name': 'Axis Long Term Equity', 'category': 'Tax Saver', 'returns1y': 16.4, 'returns3y': 14.1, 'risk': 'High', 'minSIP': 500},
@@ -24,8 +29,27 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _loadFunds();
+  }
+
+  Future<void> _loadFunds() async {
+    try {
+      final data = await ApiService.get('/mutual-funds/all');
+      final list = data is List ? data : (data['funds'] ?? []);
+      setState(() {
+        _funds = List<Map<String, dynamic>>.from(list);
+        _loading = false;
+      });
+    } catch (_) {
+      setState(() { _funds = _fallback; _loading = false; });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final filtered = _category == 'All' ? _funds : _funds.where((f) => f['category'] == _category).toList();
+    final filtered = _category == 'All' ? _funds : _funds.where((f) => (f['category'] ?? '').toString() == _category).toList();
 
     return Scaffold(
       backgroundColor: AppTheme.bgColor,
@@ -47,32 +71,38 @@ class _MutualFundsScreenState extends State<MutualFundsScreen> {
           )),
         )),
 
+        if (_loading)
+          const SliverToBoxAdapter(child: Padding(padding: EdgeInsets.all(60), child: Center(child: CircularProgressIndicator(color: AppTheme.accent))))
+        else
         SliverList(delegate: SliverChildBuilderDelegate(
           (_, i) {
             final f = filtered[i];
-            final returns1y = (f['returns1y'] as num).toDouble();
-            final risk = f['risk'] as String;
+            final returns1y = (f['returns1y'] ?? f['return1y'] ?? 0 as num).toDouble();
+            final returns3y = (f['returns3y'] ?? f['return3y'] ?? 0 as num).toDouble();
+            final risk = (f['risk'] ?? f['riskLevel'] ?? 'Moderate').toString();
+            final name = (f['name'] ?? 'Fund').toString();
+            final minSIP = (f['minSIP'] ?? f['min_sip'] ?? 500 as num);
             Color riskColor = risk == 'Low' ? AppTheme.green : risk == 'Moderate' ? AppTheme.orange : risk.contains('Very') ? AppTheme.red : AppTheme.orange;
 
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
               child: ClayCard(depth: 0.5, padding: const EdgeInsets.all(16), borderRadius: 18, child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(f['name'] as String, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
+                Text(name, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppTheme.textPrimary)),
                 const SizedBox(height: 8),
                 Row(children: [
                   _metricBadge('1Y', '+${returns1y.toStringAsFixed(1)}%', AppTheme.green),
                   const SizedBox(width: 8),
-                  _metricBadge('3Y', '+${(f['returns3y'] as num).toStringAsFixed(1)}%', AppTheme.blue),
+                  _metricBadge('3Y', '+${returns3y.toStringAsFixed(1)}%', AppTheme.blue),
                   const SizedBox(width: 8),
                   _metricBadge(risk, '', riskColor),
                   const Spacer(),
-                  Text('Min ₹${f['minSIP']}/mo', style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
+                  Text('Min ₹$minSIP/mo', style: const TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
                 ]),
                 const SizedBox(height: 12),
                 Row(children: [
                   Expanded(child: ClayButton(isSmall: true, gradient: AppTheme.accentGradient, onPressed: () => Navigator.pushNamed(context, '/sip'), child: const Text('Start SIP', style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700)))),
                   const SizedBox(width: 8),
-                  Expanded(child: ClayButton(isSmall: true, color: AppTheme.cardColor, onPressed: () {}, child: const Text('Invest', style: TextStyle(color: AppTheme.accent, fontSize: 12, fontWeight: FontWeight.w700)))),
+                  Expanded(child: ClayButton(isSmall: true, color: AppTheme.cardColor, onPressed: () => Navigator.pushNamed(context, '/sip'), child: const Text('Invest', style: TextStyle(color: AppTheme.accent, fontSize: 12, fontWeight: FontWeight.w700)))),
                 ]),
               ])),
             );

@@ -158,11 +158,12 @@ class _AutoInvestScreenState extends State<AutoInvestScreen> with SingleTickerPr
               : const Text('🚀 Execute', style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w700)),
           )),
           const SizedBox(width: 10),
-          ClayButton(
+          SizedBox(width: 52, child: ClayButton(
             gradient: AppTheme.accentGradient,
+            width: 52,
             onPressed: () => _showCreatePlan(),
             child: const Text('➕', style: TextStyle(fontSize: 20)),
-          ),
+          )),
         ]),
         // Pause/Resume plan buttons
         if (ai.plan != null) ...[
