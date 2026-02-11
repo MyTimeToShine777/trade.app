@@ -114,7 +114,7 @@ class _WalletScreenState extends State<WalletScreen> {
         )),
 
         if (wallet.transactions.isEmpty)
-          const SliverToBoxAdapter(child: Padding(padding: EdgeInsets.all(40), child: Center(child: Text('No transactions yet', style: TextStyle(color: AppTheme.textSecondary)))))
+          SliverToBoxAdapter(child: Padding(padding: EdgeInsets.all(40), child: Center(child: Text('No transactions yet', style: TextStyle(color: AppTheme.textSecondary)))))
         else SliverList(delegate: SliverChildBuilderDelegate(
           (_, i) {
             final t = wallet.transactions[i];
@@ -148,7 +148,7 @@ class _WalletScreenState extends State<WalletScreen> {
             if (ok == true) { await wallet.resetBalance(); if (mounted) auth.refreshBalance(); }
           }, child: const Text('Reset Balance', style: TextStyle(color: AppTheme.red, fontWeight: FontWeight.w700))),
         )),
-      ])),
+      ]),
       if (wallet.isLoading)
         Positioned.fill(child: Container(
           color: Colors.black26,

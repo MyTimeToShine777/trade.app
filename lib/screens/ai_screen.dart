@@ -133,7 +133,7 @@ class _AiScreenState extends State<AiScreen>
                 Text('TradeGuru AI',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, color: AppTheme.textPrimary)),
                 const SizedBox(height: 8),
-                const Padding(
+                Padding(
                     padding: EdgeInsets.symmetric(horizontal: 40),
                     child: Text('Ask about stocks, market trends, trading strategies, or portfolio advice',
                         textAlign: TextAlign.center,
@@ -165,7 +165,7 @@ class _AiScreenState extends State<AiScreen>
             alignment: Alignment.centerRight,
             child: GestureDetector(
               onTap: () => context.read<AiProvider>().clearChat(),
-              child: const Padding(
+              child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 4),
                 child: Text('🗑️ Clear chat', style: TextStyle(fontSize: 12, color: AppTheme.textSecondary, fontWeight: FontWeight.w600)),
               ),

@@ -53,7 +53,7 @@ class _JournalScreenState extends State<JournalScreen> {
         )),
 
         if (_isLoading)
-          const SliverToBoxAdapter(child: Center(child: Padding(padding: EdgeInsets.all(40), child: CircularProgressIndicator(color: AppTheme.accent))))
+          SliverToBoxAdapter(child: Center(child: Padding(padding: EdgeInsets.all(40), child: CircularProgressIndicator(color: AppTheme.accent))))
         else if (_entries.isEmpty)
           SliverToBoxAdapter(child: Padding(padding: const EdgeInsets.all(40), child: Column(mainAxisSize: MainAxisSize.min, children: [
             Icon(Icons.menu_book_outlined, size: 60, color: AppTheme.textLight),

@@ -97,7 +97,7 @@ class _CommoditiesScreenState extends State<CommoditiesScreen> {
         )),
 
         if (_loading)
-          const SliverToBoxAdapter(child: Padding(padding: EdgeInsets.all(60), child: Center(child: CircularProgressIndicator(color: AppTheme.accent))))
+          SliverToBoxAdapter(child: Padding(padding: EdgeInsets.all(60), child: Center(child: CircularProgressIndicator(color: AppTheme.accent))))
         else
           SliverList(delegate: SliverChildBuilderDelegate(
             (_, i) {

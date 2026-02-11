@@ -82,7 +82,7 @@ class _TradeScreenState extends State<TradeScreen> {
           )),
 
           if (market.isLoading)
-            const SliverToBoxAdapter(child: Center(child: Padding(padding: EdgeInsets.all(40), child: CircularProgressIndicator(color: AppTheme.accent))))
+            SliverToBoxAdapter(child: Center(child: Padding(padding: EdgeInsets.all(40), child: CircularProgressIndicator(color: AppTheme.accent))))
           else
             SliverList(delegate: SliverChildBuilderDelegate(
               (_, i) => _stockTile(market.stocks[i]),
@@ -168,7 +168,7 @@ class _TradeScreenState extends State<TradeScreen> {
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                 decoration: BoxDecoration(color: AppTheme.accent.withValues(alpha: 0.08), borderRadius: BorderRadius.circular(12), border: Border.all(color: AppTheme.accent.withValues(alpha: 0.2))),
-                child: const Row(children: [
+                child: Row(children: [
                   Text('🤖', style: TextStyle(fontSize: 16)),
                   SizedBox(width: 8),
                   Expanded(child: Text('View AI Analysis before trading →', style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppTheme.accent))),

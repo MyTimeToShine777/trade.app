@@ -149,7 +149,7 @@ class _SipScreenState extends State<SipScreen> with SingleTickerProviderStateMix
           const SizedBox(height: 16),
           ClayInput(controller: amountCtrl, labelText: 'SIP AMOUNT (₹)', hintText: '1000', prefixIcon: Icons.currency_rupee, keyboardType: TextInputType.number),
           const SizedBox(height: 16),
-          const Align(alignment: Alignment.centerLeft, child: Text('FREQUENCY', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: AppTheme.textSecondary, letterSpacing: 1))),
+          Align(alignment: Alignment.centerLeft, child: Text('FREQUENCY', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: AppTheme.textSecondary, letterSpacing: 1))),
           const SizedBox(height: 8),
           Row(children: [
             for (final f in ['weekly', 'monthly', 'quarterly']) ...[

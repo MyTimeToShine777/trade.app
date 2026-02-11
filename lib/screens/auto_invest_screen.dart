@@ -432,7 +432,7 @@ class _AutoInvestScreenState extends State<AutoInvestScreen> with SingleTickerPr
           ClayInput(controller: amountCtrl, labelText: 'AMOUNT (₹)', hintText: '5000', prefixIcon: Icons.currency_rupee, keyboardType: TextInputType.number),
           const SizedBox(height: 16),
           // Risk level selector
-          const Align(alignment: Alignment.centerLeft, child: Text('RISK LEVEL', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: AppTheme.textSecondary, letterSpacing: 1))),
+          Align(alignment: Alignment.centerLeft, child: Text('RISK LEVEL', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: AppTheme.textSecondary, letterSpacing: 1))),
           const SizedBox(height: 8),
           Row(children: [
             for (final r in ['conservative', 'moderate', 'aggressive']) ...[
@@ -442,7 +442,7 @@ class _AutoInvestScreenState extends State<AutoInvestScreen> with SingleTickerPr
           ]),
           const SizedBox(height: 16),
           // Asset type selector
-          const Align(alignment: Alignment.centerLeft, child: Text('ASSET TYPES', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: AppTheme.textSecondary, letterSpacing: 1))),
+          Align(alignment: Alignment.centerLeft, child: Text('ASSET TYPES', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: AppTheme.textSecondary, letterSpacing: 1))),
           const SizedBox(height: 8),
           Wrap(spacing: 8, runSpacing: 8, children: allAssets.map((a) => GestureDetector(
             onTap: () => ss(() {

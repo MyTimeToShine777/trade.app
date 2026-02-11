@@ -131,7 +131,7 @@ class _ScreenerScreenState extends State<ScreenerScreen> {
         )),
 
         if (market.isLoading)
-          const SliverToBoxAdapter(child: Center(child: Padding(padding: EdgeInsets.all(40), child: CircularProgressIndicator(color: AppTheme.accent))))
+          SliverToBoxAdapter(child: Center(child: Padding(padding: EdgeInsets.all(40), child: CircularProgressIndicator(color: AppTheme.accent))))
         else SliverList(delegate: SliverChildBuilderDelegate(
           (_, i) => _enhancedStockTile(stocks[i]),
           childCount: stocks.length,

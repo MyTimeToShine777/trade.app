@@ -102,7 +102,7 @@ class _ChallengeScreenState extends State<ChallengeScreen> {
         )),
 
         if (_leaderboard.isEmpty)
-          const SliverToBoxAdapter(child: Padding(padding: EdgeInsets.all(30), child: Center(child: Text('No leaderboard data yet', style: TextStyle(color: AppTheme.textSecondary)))))
+          SliverToBoxAdapter(child: Padding(padding: EdgeInsets.all(30), child: Center(child: Text('No leaderboard data yet', style: TextStyle(color: AppTheme.textSecondary)))))
         else SliverList(delegate: SliverChildBuilderDelegate(
           (_, i) {
             final l = _leaderboard[i];

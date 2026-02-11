@@ -85,7 +85,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                   child: TextField(
                     controller: _searchCtrl,
                     style: TextStyle(color: AppTheme.textPrimary, fontSize: 14),
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Search stocks to add…',
                       hintStyle: TextStyle(color: AppTheme.textLight, fontSize: 14),
                       border: InputBorder.none,
@@ -95,7 +95,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                   ),
                 ),
                 if (_isSearching)
-                  const Padding(padding: EdgeInsets.all(12), child: SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.accent))),
+                  Padding(padding: EdgeInsets.all(12), child: SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: AppTheme.accent))),
                 if (_searchResults.isNotEmpty) Container(
                   margin: const EdgeInsets.only(top: 8),
                   constraints: const BoxConstraints(maxHeight: 220),
@@ -138,7 +138,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
 
             // Loading
             if (p.isLoading)
-              const SliverToBoxAdapter(child: Padding(padding: EdgeInsets.all(60), child: Center(child: CircularProgressIndicator(color: AppTheme.accent))))
+              SliverToBoxAdapter(child: Padding(padding: EdgeInsets.all(60), child: Center(child: CircularProgressIndicator(color: AppTheme.accent))))
             // Empty
             else if (p.watchlist.isEmpty)
               SliverToBoxAdapter(child: Padding(padding: const EdgeInsets.all(60), child: Column(mainAxisSize: MainAxisSize.min, children: [

@@ -133,7 +133,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                   )),
                 ],
               ] else
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(top: 6),
                   child: Text('Tap Analyze for AI-powered portfolio insights', style: TextStyle(fontSize: 11, color: AppTheme.textSecondary)),
                 ),
@@ -151,7 +151,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
           )),
 
           if (p.isLoading)
-            const SliverToBoxAdapter(child: Center(child: Padding(padding: EdgeInsets.all(40), child: CircularProgressIndicator(color: AppTheme.accent))))
+            SliverToBoxAdapter(child: Center(child: Padding(padding: EdgeInsets.all(40), child: CircularProgressIndicator(color: AppTheme.accent))))
           else if (p.holdings.isEmpty)
             SliverToBoxAdapter(child: Padding(
               padding: const EdgeInsets.all(40),
